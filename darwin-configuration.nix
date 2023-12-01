@@ -19,6 +19,10 @@
         EDITOR = "vim";
       };
       stateVersion = "23.11"; # Make sure this matches the Nixpkgs version you are using
+
+      # Manage the yabairc file without load-sa command
+     file.".config/yabai/yabairc".source = "/Users/luke.collins/.nixpkgs/dotfiles/yabai/yabairc";
+
     };
     # Note: Zsh is not enabled here as it's managed by Nix Darwin instead
   };
@@ -32,6 +36,7 @@
   services.yabai = {
     enable = true;
     package = pkgs.yabai;
+    extraConfig = "/Users/luke.collins/.config/yabai/yabairc";
   };
 
   # Enable Zsh as the default shell
