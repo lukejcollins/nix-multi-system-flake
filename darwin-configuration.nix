@@ -3,8 +3,11 @@
 {
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [ 
-    vim git gh alacritty
+    vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode shellcheck
+    shfmt statix nixpkgs-fmt postgresql docker-compose tailscale
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   # Services configuration
   services = {
