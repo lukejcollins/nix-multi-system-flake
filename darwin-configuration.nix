@@ -2,19 +2,41 @@
 
 {
   # List packages installed in system profile.
-  environment.systemPackages = [ pkgs.vim pkgs.git pkgs.gh ];
+  environment.systemPackages = with pkgs; [ 
+    vim git gh 
+  ];
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  # Services configuration
+  services = {
+    nix-daemon = {
+      enable = true;
+    };
 
-  services.yabai = {
-    enable = true;
-    package = pkgs.yabai;
-    extraConfig = "/Users/luke.collins/.config/yabai/yabairc";
+    yabai = { 
+      enable = true;
+      package = pkgs.yabai;
+      extraConfig = "/Users/luke.collins/.config/yabai/yabairc";
+    };
   };
 
+  launchd.user.agents.wallpaper = {
+    script = ''
+      /usr/bin/osascript /etc/set-wallpaper.scpt
+    '';
+    serviceConfig = {
+      StartInterval = 60;
+      RunAtLoad = true;
+      KeepAlive = false;
+    };
+  };
+
+  # Enable Zsh
   programs.zsh.enable = true;
 
-  # System State Version
+  # AppleScript for wallpaper
+  environment.etc."set-wallpaper.scpt".source = ./applescript/set-wallpaper.scpt;
+
+  # System State Version and defaults
   system.stateVersion = 4; # Ensure this matches your setup
+  system.defaults.NSGlobalDomain.AppleInterfaceStyle = "Dark";
 }
