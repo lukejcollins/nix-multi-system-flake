@@ -3,7 +3,7 @@
 {
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [ 
-    vim git gh 
+    vim git gh alacritty
   ];
 
   # Services configuration
@@ -16,6 +16,11 @@
       enable = true;
       package = pkgs.yabai;
       extraConfig = "/Users/luke.collins/.config/yabai/yabairc";
+    };
+    
+    skhd = {
+     enable = true;
+     package = pkgs.skhd;
     };
   };
 
