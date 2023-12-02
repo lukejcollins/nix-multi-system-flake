@@ -1,6 +1,8 @@
 # Opens Alacritty
 cmd - return : open -a alacritty
 
+cmd + ctrl - return : open -a "Visual Studio Code"
+
 # Navigation
 alt - h : yabai -m window --focus west
 alt - j : yabai -m window --focus south
