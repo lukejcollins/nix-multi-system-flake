@@ -1,4 +1,4 @@
-[![nix-darwin](https://img.shields.io/badge/NixOS-unstable-blue.svg?logo=nixos)](https://github.com/LnL7/nix-darwin) [![macOS](https://img.shields.io/badge/-macOS-green.svg?logo=apple)](https://www.apple.com/macos/) 
+[![nix-darwin](https://img.shields.io/badge/nix-darwin-blue.svg?logo=nixos)](https://github.com/LnL7/nix-darwin) [![macOS](https://img.shields.io/badge/-macOS-green.svg?logo=apple)](https://www.apple.com/macos/) 
 
 # Deploying nix-darwin on a New Device
 
