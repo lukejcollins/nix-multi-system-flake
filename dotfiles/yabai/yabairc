@@ -29,4 +29,7 @@ yabai -m config                                 \
     mouse_action2                resize         \
     mouse_drop_action            swap
 
+# Add rule for Emacs to tile by default
+yabai -m rule --add app="^Emacs$" manage=on
+
 echo "yabai configuration loaded.."

@@ -14,8 +14,12 @@
 ;;	         :config
 ;;		   (load-theme 'rose-pine-dawn t))
 
+(load-theme 'modus-vivendi)
+
+(tool-bar-mode -1)
+
 ;; Startup appearance
-(setq fancy-splash-image "~/Pictures/gnu_color.png")
+(setq fancy-splash-image "/Users/luke.collins/Pictures/gnu_color.png")
 
 ;; Clipboard Configuration
 (setq select-enable-clipboard t
