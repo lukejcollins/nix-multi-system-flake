@@ -47,14 +47,23 @@ in
     };
   };
 
-  launchd.user.agents.wallpaper = {
-    script = ''
-      /usr/bin/osascript /etc/set-wallpaper.scpt
-    '';
-    serviceConfig = {
-      StartInterval = 60;
-      RunAtLoad = true;
-      KeepAlive = false;
+  launchd.user.agents = { 
+    wallpaper = {
+      script = ''
+        /usr/bin/osascript /etc/set-wallpaper.scpt
+      '';
+      serviceConfig = {
+        StartInterval = 60;
+        RunAtLoad = true;
+        KeepAlive = false;
+      };
+    };
+    ubersicht = {
+      serviceConfig = {
+	Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht"; 
+        RunAtLoad = true;
+        KeepAlive = false;
+      };
     };
   };
 
