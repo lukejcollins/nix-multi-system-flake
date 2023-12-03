@@ -24,10 +24,32 @@ in
 {
   environment.systemPackages = with pkgs; [
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode shellcheck
-    shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht
+    shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht gcc
+    (emacsWithPackagesFromUsePackage {
+      config = ./emacs/init.el;
+      defaultInitFile = true;
+      alwaysEnsure = true;
+      alwaysTangle = true;
+      package = pkgs.emacs-pgtk;
+      extraEmacsPackages = epkgs: [
+        epkgs.use-package epkgs.terraform-mode epkgs.flycheck epkgs.flycheck-inline
+        epkgs.dockerfile-mode epkgs.nix-mode epkgs.blacken epkgs.treemacs
+        epkgs.treemacs-all-the-icons epkgs.modus-themes epkgs.helm epkgs.vterm
+        epkgs.markdown-mode epkgs.grip-mode epkgs.dash epkgs.s epkgs.editorconfig
+        epkgs.autothemer epkgs.ivy epkgs.counsel epkgs.rust-mode
+        epkgs.lsp-mode epkgs.modus-themes
+      ];
+    })
   ];
 
   nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = "https://github.com/nix-community/emacs-overlay/archive/d194712b55853051456bc47f39facc39d03cbc40.tar.gz";
+      sha256 = "sha256:08akyd7lvjrdl23vxnn9ql9snbn25g91pd4hn3f150m79p23lrrs";
+    }))
+  ];
 
   # Services configuration
   services = {
