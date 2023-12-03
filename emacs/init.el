@@ -1,5 +1,9 @@
 (require 'use-package)
 
+;; Dashboard with Rubin quotes ----------------------
+
+(setq dashboard-footer-messages '("Zoom in and obsess. Zoom out and observe. We get to choose."))
+
 (setenv "PATH" "/Users/luke.collins/.nix-profile/bin:/etc/profiles/per-user/luke.collins/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin")
 (setq exec-path (append '("/Users/luke.collins/.nix-profile/bin"
                           "/etc/profiles/per-user/luke.collins/bin"
@@ -7,6 +11,36 @@
                           "/nix/var/nix/profiles/default/bin"
                           "/usr/local/bin")
                         exec-path))
+
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-banner-logo-title "Welcome home")
+  ;; Set the banner image
+  ;; Content is not centered by default. To center, set
+  (setq dashboard-center-content t)
+  (setq dashboard-startup-banner "~/Pictures/gnu_color.png")
+  ;; Value can be
+  ;; 'official which displays the official emacs logo
+  ;; 'logo which displays an alternative emacs logo
+  ;; 1, 2 or 3 which displays one of the text banners
+  ;; "path/to/your/image.png" or "path/to/your/text.txt"
+  ;; which displays whatever image/text you would prefer
+  
+  (setq dashboard-items '((recents  . 5)
+                          (projects . 5))))
+
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+
+(setq dashboard-display-icons-p t)
+;; (setq dashboard-icon-type 'nerd-icons)
+;;(setq dashboard-set-file-icons t)
+
+;;(dashboard-modify-heading-icons '((recents . "file-text")
+;;                                  (bookmarks . "book")))
+
+;;(setq dashboard-footer-messages '("Zoom in and obsess. Zoom out and observe. We get to choose."))
 
 ;; Theme
 ;;(use-package rose-pine-dawn-theme
