@@ -42,6 +42,11 @@ in
     })
   ];
 
+  fonts = {
+     enableFontDir = true;
+     fonts = [ pkgs.nerdfonts ];
+   };
+  
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.overlays = [
