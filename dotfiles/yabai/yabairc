@@ -32,4 +32,6 @@ yabai -m config                                 \
 # Add rule for Emacs to tile by default
 yabai -m rule --add app="^Emacs$" manage=on
 
+yabai -m config external_bar all:28:0
+
 echo "yabai configuration loaded.."
