@@ -1,39 +1,39 @@
 # Opens Alacritty
 cmd - return : open -a alacritty
 
-cmd + ctrl - return : open -a "Visual Studio Code"
+cmd + ctrl - return : open -a "Emacs"
 
 # Navigation
-alt - h : yabai -m window --focus west
-alt - j : yabai -m window --focus south
-alt - k : yabai -m window --focus north
-alt - l : yabai -m window --focus east
+cmd - left : yabai -m window --focus west
+cmd - down : yabai -m window --focus south
+cmd - up : yabai -m window --focus north
+cmd - right : yabai -m window --focus east
 
 # Moving windows
-shift + alt - h : yabai -m window --warp west
-shift + alt - j : yabai -m window --warp south
-shift + alt - k : yabai -m window --warp north
-shift + alt - l : yabai -m window --warp east
+cmd + shift - left : yabai -m window --warp west
+cmd + shift - down : yabai -m window --warp south
+cmd + shift - up : yabai -m window --warp north
+cmd + shift - right : yabai -m window --warp east
 
 # Move focus container to workspace
-cmd + shift - m : yabai -m window --space last; yabai -m space --focus last
-cmd + shift - p : yabai -m window --space prev; yabai -m space --focus prev
-cmd + shift - n : yabai -m window --space next; yabai -m space --focus next
 cmd + shift - 1 : yabai -m window --space 1; yabai -m space --focus 1
 cmd + shift - 2 : yabai -m window --space 2; yabai -m space --focus 2
 cmd + shift - 3 : yabai -m window --space 3; yabai -m space --focus 3
 cmd + shift - 4 : yabai -m window --space 4; yabai -m space --focus 4
+cmd + shift - 5 : yabai -m window --space 5; yabai -m space --focus 5
+
+# Move space
+cmd - 1 : yabai -m space --focus 1
+cmd - 2 : yabai -m space --focus 2
+cmd - 3 : yabai -m space --focus 3
+cmd - 4 : yabai -m space --focus 4
+cmd - 5 : yabai -m space --focus 5
 
 # Resize windows
-lctrl + alt - h : yabai -m window --resize left:-50:0; \
+cmd + alt - left : yabai -m window --resize left:-50:0; \
                   yabai -m window --resize right:-50:0
-lctrl + alt - j : yabai -m window --resize bottom:0:50; \
+cmd + alt - down : yabai -m window --resize bottom:0:50; \
                   yabai -m window --resize top:0:50
-lctrl + alt - k : yabai -m window --resize top:0:-50; \
+cmd + alt - up : yabai -m window --resize top:0:-50; \
                   yabai -m window --resize bottom:0:-50
-lctrl + alt - l : yabai -m window --resize right:50:0; \
-
-# Float / Unfloat window
-shift + alt - space : \
-    yabai -m window --toggle float; \
-    yabai -m window --toggle border
+cmd + alt - right : yabai -m window --resize right:50:0; \
