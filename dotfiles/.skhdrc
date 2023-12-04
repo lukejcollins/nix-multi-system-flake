@@ -1,8 +1,6 @@
 # Opens Alacritty
 cmd - return : open -a alacritty
 
-cmd + ctrl - return : open -a "Emacs"
-
 # Navigation
 cmd - left : yabai -m window --focus west
 cmd - down : yabai -m window --focus south
