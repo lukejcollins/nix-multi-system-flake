@@ -52,9 +52,9 @@ in
 
   # Install fonts
   fonts = {
-     enableFontDir = true;
-     fonts = [ pkgs.nerdfonts ];
-   };
+    enableFontDir = true;
+    fonts = [ pkgs.nerdfonts ];
+  };
 
   # Add emacs overlay
   nixpkgs.overlays = [
@@ -80,8 +80,8 @@ in
 
     # Enable skhd
     skhd = {
-     enable = true;
-     package = pkgs.skhd;
+      enable = true;
+      package = pkgs.skhd;
     };
   };
 
@@ -101,7 +101,7 @@ in
     # Enable Übersicht service
     ubersicht = {
       serviceConfig = {
-	Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht"; 
+	      Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht"; 
         RunAtLoad = true;
         KeepAlive = false;
       };
@@ -114,9 +114,9 @@ in
   # Move files into place
   environment.etc."set-wallpaper.scpt".source = ./applescript/set-wallpaper.scpt;
 
-  # System State Version
-  system.stateVersion = 4;
-
-  # Set dark mode
-  system.defaults.NSGlobalDomain.AppleInterfaceStyle = "Dark";
+  # System configuration
+  system = {
+    stateVersion = 4;
+    defaults.NSGlobalDomain.AppleInterfaceStyle = "Dark";
+  };
 }
