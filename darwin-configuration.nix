@@ -1,12 +1,13 @@
 { config, pkgs, ... }:
 
 let
+  # Use uebersicht for desktop widgets
   uebersicht = pkgs.stdenv.mkDerivation {
     name = "Uebersicht-1.6.77";
     buildInputs = [ pkgs.unzip pkgs.glibcLocales ];
     src = pkgs.fetchurl {
       url = "https://tracesof.net/uebersicht/releases/Uebersicht-1.6.77.app.zip";
-      sha256 = "sha256-jxGxY1YYCMylJs7kkUCyIczNo7u2n1qcoL2KdQ58h70="; # Placeholder SHA
+      sha256 = "sha256-jxGxY1YYCMylJs7kkUCyIczNo7u2n1qcoL2KdQ58h70=";
     };
 
     unpackPhase = ''
@@ -20,11 +21,17 @@ let
       cp -R "Übersicht.app" $out/Applications/
     '';
   };
+  
 in
 {
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+  
+  # Install packages
   environment.systemPackages = with pkgs; [
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode shellcheck
     shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht gcc direnv
+    # Install emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
       defaultInitFile = true;
@@ -43,13 +50,13 @@ in
     })
   ];
 
+  # Install fonts
   fonts = {
      enableFontDir = true;
      fonts = [ pkgs.nerdfonts ];
    };
-  
-  nixpkgs.config.allowUnfree = true;
 
+  # Add emacs overlay
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = "https://github.com/nix-community/emacs-overlay/archive/d194712b55853051456bc47f39facc39d03cbc40.tar.gz";
@@ -59,22 +66,26 @@ in
 
   # Services configuration
   services = {
+    # Enable nix-daemon
     nix-daemon = {
       enable = true;
     };
 
+    # Enable yabai
     yabai = {
       enable = true;
       package = pkgs.yabai;
       extraConfig = "/Users/luke.collins/.config/yabai/yabairc";
     };
 
+    # Enable skhd
     skhd = {
      enable = true;
      package = pkgs.skhd;
     };
   };
 
+  # Enable wallpaper service
   launchd.user.agents = { 
     wallpaper = {
       script = ''
@@ -86,6 +97,8 @@ in
         KeepAlive = false;
       };
     };
+
+    # Enable Übersicht service
     ubersicht = {
       serviceConfig = {
 	Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht"; 
@@ -98,10 +111,12 @@ in
   # Enable Zsh
   programs.zsh.enable = true;
 
-  # AppleScript for wallpaper
+  # Move files into place
   environment.etc."set-wallpaper.scpt".source = ./applescript/set-wallpaper.scpt;
 
-  # System State Version and defaults
-  system.stateVersion = 4; # Ensure this matches your setup
+  # System State Version
+  system.stateVersion = 4;
+
+  # Set dark mode
   system.defaults.NSGlobalDomain.AppleInterfaceStyle = "Dark";
 }
