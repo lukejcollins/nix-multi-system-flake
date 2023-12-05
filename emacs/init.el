@@ -95,6 +95,14 @@
   ;; Set the footer message
   (setq dashboard-footer-messages '("Zoom in and obsess. Zoom out and observe. We get to choose.")))
 
+(use-package nerd-icons
+  :ensure t
+  :custom
+  ;; The Nerd Font you want to use in GUI
+  ;; "Symbols Nerd Font Mono" is the default and is recommended
+  ;; but you can use any other Nerd Font if you want
+  (nerd-icons-font-family "Symbols Nerd Font Mono"))
+
 ;; Projectile configuration
 (use-package projectile
   :ensure t

@@ -45,7 +45,7 @@ in
         epkgs.markdown-mode epkgs.grip-mode epkgs.dash epkgs.s epkgs.editorconfig
         epkgs.autothemer epkgs.ivy epkgs.counsel epkgs.rust-mode
         epkgs.lsp-mode epkgs.modus-themes epkgs.dashboard epkgs.direnv
-        epkgs.projectile
+        epkgs.projectile epkgs.nerd-icons
       ];
     })
   ];
