@@ -33,6 +33,7 @@
 
 (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
+
 (setq dashboard-display-icons-p t)
 ;; (setq dashboard-icon-type 'nerd-icons)
 ;;(setq dashboard-set-file-icons t)
@@ -47,6 +48,12 @@
 ;;	       :ensure t
 ;;	         :config
 ;;		   (load-theme 'rose-pine-dawn t))
+
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
 
 (load-theme 'modus-vivendi)
 

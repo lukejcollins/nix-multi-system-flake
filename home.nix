@@ -37,6 +37,7 @@ in
     file.".emacsCopilot".source = emacsCopilotSrc;
     file.".zshrc".source = ./dotfiles/.zshrc;
     file.".p10k.zsh".source = ./dotfiles/.p10k.zsh;
+    file.".config/direnv/direnvrc".source = ./dotfiles/direnv/direnvrc;
   };
   # Note: Zsh is not enabled here as it's managed by Nix Darwin instead
 }
