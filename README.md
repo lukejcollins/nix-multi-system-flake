@@ -1,3 +1,5 @@
+<img width="1800" alt="image" src="https://github.com/lukejcollins/nix-darwin-build/assets/44213313/363d0b4e-c929-4d36-b237-d80f96ea488a">
+
 [![nix-darwin](https://img.shields.io/badge/nix-darwin-blue.svg?logo=nixos)](https://github.com/LnL7/nix-darwin) [![macOS](https://img.shields.io/badge/-macOS-green.svg?logo=apple)](https://www.apple.com/macos/) 
 
 # Deploying nix-darwin on a New Device
