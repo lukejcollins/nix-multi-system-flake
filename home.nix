@@ -35,6 +35,10 @@ in
       EDITOR = "vim";
     };
 
+    packages = with pkgs; [
+      myPythonEnv
+    ];
+
     # Set the default stateVersion to the latest version
     stateVersion = "23.11"; # Make sure this matches the Nixpkgs version you are using
 
