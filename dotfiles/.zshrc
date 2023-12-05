@@ -20,6 +20,11 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# flake build alias
 alias flake-build='darwin-rebuild switch --flake ~/git/nix-darwin-build'
 
+# nix clean alias
+alias nix-clean='nix-collect-garbage -d'
+
+# direnv hook
 eval "$(direnv hook zsh)"
