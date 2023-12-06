@@ -3,11 +3,11 @@
 let
   # Use uebersicht for desktop widgets
   uebersicht = pkgs.stdenv.mkDerivation {
-    name = "Uebersicht-1.6.77";
+    name = "uebersicht-1.6.82";
     buildInputs = [ pkgs.unzip pkgs.glibcLocales ];
     src = pkgs.fetchurl {
-      url = "https://tracesof.net/uebersicht/releases/Uebersicht-1.6.77.app.zip";
-      sha256 = "sha256-jxGxY1YYCMylJs7kkUCyIczNo7u2n1qcoL2KdQ58h70=";
+      url = "https://tracesof.net/uebersicht/releases/Uebersicht-1.6.82.app.zip";
+      sha256 = "sha256-OdteCr8D9jkJklEclGwZuXqJ+E6+KshyGev5If/7lys=";
     };
 
     unpackPhase = ''
