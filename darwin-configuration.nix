@@ -31,7 +31,7 @@ in
   environment.systemPackages = with pkgs; [
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode shellcheck
     shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht gcc direnv tflint
-    hadolint neofetch
+    hadolint neofetch colima
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
@@ -119,5 +119,8 @@ in
   system = {
     stateVersion = 4;
     defaults.NSGlobalDomain.AppleInterfaceStyle = "Dark";
+    activationScripts.extraActivation.text = ''
+      softwareupdate --install-rosetta --agree-to-license
+    '';
   };
 }
