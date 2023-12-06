@@ -30,7 +30,8 @@ in
   # Install packages
   environment.systemPackages = with pkgs; [
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode shellcheck
-    shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht gcc direnv tflint hadolint
+    shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht gcc direnv tflint
+    hadolint neofetch
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
