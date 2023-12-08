@@ -31,7 +31,7 @@ in
   environment.systemPackages = with pkgs; [
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode shellcheck
     shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht gcc direnv tflint
-    hadolint neofetch colima
+    hadolint neofetch colima raycast
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
