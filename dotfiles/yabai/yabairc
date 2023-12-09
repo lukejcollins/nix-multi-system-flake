@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# Restart Uebersicht
+osascript -e 'tell application id "tracesOf.Uebersicht" to refresh'
+
 # Global settings for yabai (without using load-sa)
 yabai -m config                                 \
     mouse_follows_focus          off            \

@@ -23,11 +23,17 @@
 ;;Remove tool bar
 (tool-bar-mode -1)
 
-
 ;; Enable line numbers
 (global-display-line-numbers-mode 1)
 (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
 
+;; Set mode line appearance
+(set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+
+;; Set modeline to doom-modeline
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
 
 ;;; General Configuration ;;;
 ;;----------------------------;;
@@ -44,6 +50,15 @@
 
 ;; Disable auto save
 (setq auto-save-default nil)
+
+;; Auto revert mode
+(global-auto-revert-mode t)
+
+;; Disable dialog boxes
+(setq use-dialog-box nil)
+
+;; Meta key pound sign
+(global-set-key (kbd "M-3") (lambda () (interactive) (insert "#")))
 
 ;; Path configuration
 (let ((paths '("/Users/luke.collins/.nix-profile/bin"
@@ -77,7 +92,7 @@
   (dashboard-setup-startup-hook)
 
   ;; Dashboard appearance settings
-  (setq dashboard-banner-logo-title "Welcome home")
+  (setq dashboard-banner-logo-title "Allied Mastercomputer")
   (setq dashboard-startup-banner "~/Pictures/gnu_color.png") ; Set the banner image
   (setq dashboard-center-content t) ; Center the content
   (setq dashboard-display-icons-p t)
@@ -93,7 +108,7 @@
                                     (bookmarks . "book")))
 
   ;; Set the footer message
-  (setq dashboard-footer-messages '("Zoom in and obsess. Zoom out and observe. We get to choose.")))
+  (setq dashboard-footer-messages '("I have no mouth, and I must scream")))
 
 (use-package nerd-icons
   :ensure t
@@ -245,6 +260,20 @@
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package company :hook (after-init . global-company-mode))
 (use-package flycheck :init (global-flycheck-mode))
+
+;; Markdown mode
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
+;; Grip mode
+(use-package grip-mode
+  :ensure t
+  :hook ((markdown-mode . grip-mode)))
 
 (provide 'init)
 ;;; init.el ends here
