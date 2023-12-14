@@ -255,10 +255,13 @@
   :ensure t
   :mode "\\.rs\\'")
 
-;; LSP UI
-(use-package lsp-ui :commands lsp-ui-mode)
+;; LSP UI (Note: Need to figure out how to get this working)
+;;(use-package lsp-ui
+;;  :commands lsp-ui-mode
+;;  :init
+;;  (setq lsp-ui-doc-position 'bottom))
+
 (use-package company :hook (after-init . global-company-mode))
-(use-package flycheck :init (global-flycheck-mode))
 
 ;; Markdown mode
 (use-package markdown-mode
