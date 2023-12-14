@@ -211,8 +211,6 @@
   :ensure t
   :init (global-flycheck-mode)
   :config
-  (setq-default flycheck-disabled-checkers '(python-pycompile))
-  (add-hook 'python-mode-hook (lambda () (flycheck-select-checker 'python-flake8)))
   (add-hook 'sh-mode-hook (lambda () (flycheck-select-checker 'sh-shellcheck)))
   (add-hook 'dockerfile-mode-hook (lambda () (flycheck-select-checker 'dockerfile-hadolint)))
   (add-hook 'nix-mode-hook (lambda () (flycheck-select-checker 'nix-statix)))
@@ -249,14 +247,15 @@
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
-  :hook (rust-mode . lsp-deferred))
+  :hook ((python-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)))
 
 ;; Rust Mode
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
 
-;; Rust LSP
+;; LSP UI
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package company :hook (after-init . global-company-mode))
 (use-package flycheck :init (global-flycheck-mode))
