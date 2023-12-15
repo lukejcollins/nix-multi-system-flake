@@ -23,14 +23,15 @@
 ;;Remove tool bar
 (tool-bar-mode -1)
 
+;; Menu bar mode
+(menu-bar-mode t)
+
 ;; Enable line numbers
 (global-display-line-numbers-mode 1)
 (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
 
-;; Set mode line appearance
 (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
 
-;; Set modeline to doom-modeline
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode))
@@ -59,6 +60,32 @@
 
 ;; Meta key pound sign
 (global-set-key (kbd "M-3") (lambda () (interactive) (insert "#")))
+
+;; Set modifier key
+(setq mac-option-modifier 'meta)
+(setq mac-right-option-modifier nil)
+(setq mac-command-modifier 'super)
+
+;; Copy
+(global-set-key (kbd "s-c") 'kill-ring-save)
+
+;; Paste
+(global-set-key (kbd "s-v") 'yank)
+
+;; Cut
+(global-set-key (kbd "s-x") 'kill-region)
+
+;; Undo
+(global-set-key (kbd "s-z") 'undo)
+
+;; Redo
+(global-set-key (kbd "s-y") 'undo-redo)
+
+;; Force Quit
+(global-set-key (kbd "s-q") 'kill-emacs)
+
+;; Select All
+(global-set-key (kbd "s-a") 'mark-whole-buffer)
 
 ;; Path configuration
 (let ((paths '("/Users/luke.collins/.nix-profile/bin"
@@ -138,26 +165,28 @@
   :bind (("M-x" . helm-M-x)))
 
 ;; Treemacs configuration
+;; Treemacs configuration
 (use-package treemacs
   :ensure t
-  :bind (("C-x t" . treemacs))
-  :custom (treemacs-theme "all-the-icons")
+  :bind (("C-x t" . treemacs)))
+
+(use-package treemacs-nerd-icons
+  :after treemacs
   :config
-  (use-package treemacs-all-the-icons
-    :ensure t))
+  (treemacs-load-theme "nerd-icons"))
 
-(defun my-treemacs-add-project-with-name ()
-  "Add a project to the Treemacs workspace with a custom name."
-  (interactive)
-  (let* ((path (read-directory-name "Project root: "))
-         (name (read-string "Project name: " (file-name-nondirectory (directory-file-name path))))
-         (project (list :name name :path path)))
-    (if (treemacs-workspace->is-empty?)
-        (treemacs-do-create-workspace)
-      (treemacs-do-add-project-to-workspace path name))))
+;;(defun my-treemacs-add-project-with-name ()
+;;  "Add a project to the Treemacs workspace with a custom name."
+;;  (interactive)
+;;  (let* ((path (read-directory-name "Project root: "))
+;;         (name (read-string "Project name: " (file-name-nondirectory (directory-file-name path))))
+;;         (project (list :name name :path path)))
+;;    (if (treemacs-workspace->is-empty?)
+;;        (treemacs-do-create-workspace)
+;;      (treemacs-do-add-project-to-workspace path name))))
 
-(with-eval-after-load 'treemacs
-  (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
+;;(with-eval-after-load 'treemacs
+;;  (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
 
 ;; Ivy configuration
 (use-package ivy
@@ -213,7 +242,7 @@
   :config
   (add-hook 'sh-mode-hook (lambda () (flycheck-select-checker 'sh-shellcheck)))
   (add-hook 'dockerfile-mode-hook (lambda () (flycheck-select-checker 'dockerfile-hadolint)))
-  (add-hook 'nix-mode-hook (lambda () (flycheck-select-checker 'nix-statix)))
+  ;;(add-hook 'nix-mode-hook (lambda () (flycheck-select-checker 'nix-statix)))
   (add-hook 'terraform-mode-hook (lambda () (flycheck-select-checker 'terraform-tflint))))
 
 (use-package flycheck-inline
@@ -224,7 +253,7 @@
 ;; Modes for various file types
 (use-package terraform-mode :ensure t)
 (use-package dockerfile-mode :ensure t)
-(use-package nix-mode :ensure t)
+;;(use-package nix-mode :ensure t)
 (use-package markdown-mode :ensure t)
 
 ;; Python configuration
@@ -239,29 +268,28 @@
                                (interactive)
                                (cond ((eq major-mode 'python-mode) (blacken-buffer))
                                      ((eq major-mode 'sh-mode) (shell-command-on-region (point-min) (point-max) "shfmt" (current-buffer) t))
-                                     ((eq major-mode 'nix-mode) (shell-command-on-region (point-min) (point-max) "nixpkgs-fmt" (current-buffer) t))
+                                     ;;((eq major-mode 'nix-mode) (shell-command-on-region (point-min) (point-max) "nixpkgs-fmt" (current-buffer) t))
                                      ((eq major-mode 'terraform-mode) (shell-command-on-region (point-min) (point-max) "terraform fmt" nil t))
                                      (t (message "No formatter specified for %s" major-mode)))))
 
-;; LSP configuration
+;; LSP Mode
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
   :hook ((python-mode . lsp-deferred)
          (rust-mode . lsp-deferred)))
 
+;; LSP UI
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :commands lsp-ui-mode
+  :hook (lsp-mode . lsp-ui-mode))
+
 ;; Rust Mode
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
-
-;; LSP UI (Note: Need to figure out how to get this working)
-;;(use-package lsp-ui
-;;  :commands lsp-ui-mode
-;;  :init
-;;  (setq lsp-ui-doc-position 'bottom))
-
-(use-package company :hook (after-init . global-company-mode))
 
 ;; Markdown mode
 (use-package markdown-mode

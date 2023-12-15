@@ -38,7 +38,7 @@ in
       defaultInitFile = true;
       alwaysEnsure = true;
       alwaysTangle = true;
-      package = pkgs.emacs-pgtk;
+      package = pkgs.emacs29-macport;
       extraEmacsPackages = epkgs: [
         epkgs.use-package epkgs.terraform-mode epkgs.flycheck epkgs.flycheck-inline
         epkgs.dockerfile-mode epkgs.nix-mode epkgs.blacken epkgs.treemacs

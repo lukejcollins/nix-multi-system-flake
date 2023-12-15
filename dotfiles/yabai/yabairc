@@ -32,9 +32,6 @@ yabai -m config                                 \
     mouse_action2                resize         \
     mouse_drop_action            swap
 
-# Add rule for Emacs to tile by default
-yabai -m rule --add app="^Emacs$" manage=on
-
 # External display bar gap
 yabai -m config external_bar all:28:0
 
@@ -43,4 +40,4 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
 
 # Disable window management for System Preferences
-yabai -m rule --add title="^System Settings$" manage=off
+yabai -m rule --add title="^System Preferences$" manage=off
