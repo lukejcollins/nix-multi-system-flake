@@ -283,5 +283,10 @@
   :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode))
 
+;; Enable company
+(use-package company
+  :ensure t
+  :init (global-company-mode))
+
 (provide 'init)
 ;;; init.el ends here
