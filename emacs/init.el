@@ -17,9 +17,6 @@
 ;; Load theme
 (load-theme 'modus-vivendi)
 
-;; Startup appearance
-(setq fancy-splash-image "/Users/luke.collins/Pictures/gnu_color.png")
-
 ;;Remove tool bar
 (tool-bar-mode -1)
 
@@ -30,6 +27,7 @@
 (global-display-line-numbers-mode 1)
 (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
 
+;; Configure mode line
 (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
 
 (use-package doom-modeline
@@ -162,9 +160,20 @@
   :ensure t
   :config
   (helm-mode 1)
-  :bind (("M-x" . helm-M-x)))
 
-;; Treemacs configuration
+  ;; Enable fuzzy matching
+  (setq helm-M-x-fuzzy-match t) ;; Fuzzy matching for M-x
+  (setq helm-buffers-fuzzy-matching t) ;; Fuzzy matching for buffer-related tasks
+  (setq helm-recentf-fuzzy-match t) ;; Fuzzy matching for recent files
+  (setq helm-locate-fuzzy-match t) ;; Fuzzy matching for locate command
+  (setq helm-semantic-fuzzy-match t) ;; Fuzzy matching for semantic sources
+  (setq helm-imenu-fuzzy-match t) ;; Fuzzy matching for imenu
+  (setq helm-completion-in-region-fuzzy-match t) ;; Fuzzy matching for in-region completion
+
+  :bind (("M-x" . helm-M-x)
+         ;; You can add more keybindings here if needed
+        ))
+
 ;; Treemacs configuration
 (use-package treemacs
   :ensure t
@@ -187,19 +196,6 @@
 
 ;;(with-eval-after-load 'treemacs
 ;;  (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
-
-;; Ivy configuration
-(use-package ivy
-  :ensure t
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t))
-
-;; Counsel configuration
-(use-package counsel
-  :ensure t
-  :bind (("M-y" . counsel-yank-pop)
-         ("C-x C-f" . counsel-find-file)))
 
 ;; Enable grip-mode
 (use-package grip-mode
