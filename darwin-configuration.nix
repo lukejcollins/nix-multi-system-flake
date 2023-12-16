@@ -29,9 +29,10 @@ in
   
   # Install packages
   environment.systemPackages = with pkgs; [
-    vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode shellcheck
-    shfmt statix nixpkgs-fmt postgresql docker-compose tailscale uebersicht gcc direnv tflint
-    hadolint neofetch colima raycast python3Packages.python-lsp-server
+    vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode
+    shfmt postgresql docker-compose tailscale uebersicht gcc direnv neofetch colima
+    raycast python3Packages.python-lsp-server rnix-lsp nodePackages.bash-language-server
+    dockerfile-language-server-nodejs terraform-ls
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
@@ -41,17 +42,16 @@ in
       package = pkgs.emacs29-macport;
       extraEmacsPackages = epkgs: [
         epkgs.use-package epkgs.terraform-mode epkgs.flycheck epkgs.flycheck-inline
-        epkgs.dockerfile-mode epkgs.nix-mode epkgs.blacken epkgs.treemacs
+        epkgs.dockerfile-mode epkgs.nix-mode epkgs.treemacs epkgs.markdown-mode
         epkgs.treemacs-all-the-icons epkgs.modus-themes epkgs.helm epkgs.vterm
         epkgs.markdown-mode epkgs.grip-mode epkgs.dash epkgs.s epkgs.editorconfig
-        epkgs.autothemer epkgs.ivy epkgs.counsel epkgs.rust-mode
-        epkgs.lsp-mode epkgs.modus-themes epkgs.dashboard epkgs.direnv
-        epkgs.projectile epkgs.nerd-icons epkgs.doom-modeline epkgs.grip-mode
-        epkgs.markdown-mode
+        epkgs.autothemer epkgs.rust-mode epkgs.lsp-mode epkgs.modus-themes
+        epkgs.dashboard epkgs.direnv epkgs.projectile epkgs.nerd-icons
+        epkgs.doom-modeline epkgs.grip-mode
       ];
     })
   ];
-
+ 
   # Install fonts
   fonts = {
     enableFontDir = true;

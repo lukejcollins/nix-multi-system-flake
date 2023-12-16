@@ -233,63 +233,27 @@
 ;;; Language Configuration ;;;
 ;;----------------------------;;
 
-;; Linting with Flycheck
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode)
-  :config
-  (add-hook 'sh-mode-hook (lambda () (flycheck-select-checker 'sh-shellcheck)))
-  (add-hook 'dockerfile-mode-hook (lambda () (flycheck-select-checker 'dockerfile-hadolint)))
-  ;;(add-hook 'nix-mode-hook (lambda () (flycheck-select-checker 'nix-statix)))
-  (add-hook 'terraform-mode-hook (lambda () (flycheck-select-checker 'terraform-tflint))))
-
-(use-package flycheck-inline
-  :ensure t
-  :after flycheck
-  :hook (flycheck-mode . flycheck-inline-mode))
+;; Custom function to enable lsp-mode only for Bash scripts and not for Zsh
+(defun enable-lsp-in-sh-mode ()
+  "Enable lsp-mode in shell mode only for Bash scripts."
+  (when (and (eq major-mode 'sh-mode)
+             (not (string-suffix-p ".zsh" (buffer-file-name))))
+    (lsp-deferred)))
 
 ;; Modes for various file types
-(use-package terraform-mode :ensure t)
-(use-package dockerfile-mode :ensure t)
-;;(use-package nix-mode :ensure t)
-(use-package markdown-mode :ensure t)
-
-;; Python configuration
-(use-package blacken
+(use-package terraform-mode
   :ensure t
-  :hook (python-mode . blacken-mode)
-  :config
-  (setq blacken-line-length 79))
-
-;; Formatting keybinding
-(global-set-key (kbd "<f5>") (lambda ()
-                               (interactive)
-                               (cond ((eq major-mode 'python-mode) (blacken-buffer))
-                                     ((eq major-mode 'sh-mode) (shell-command-on-region (point-min) (point-max) "shfmt" (current-buffer) t))
-                                     ;;((eq major-mode 'nix-mode) (shell-command-on-region (point-min) (point-max) "nixpkgs-fmt" (current-buffer) t))
-                                     ((eq major-mode 'terraform-mode) (shell-command-on-region (point-min) (point-max) "terraform fmt" nil t))
-                                     (t (message "No formatter specified for %s" major-mode)))))
-
-;; LSP Mode
-(use-package lsp-mode
+  :mode ("\\.tf\\'" . terraform-mode))
+(use-package dockerfile-mode
   :ensure t
-  :commands (lsp lsp-deferred)
-  :hook ((python-mode . lsp-deferred)
-         (rust-mode . lsp-deferred)))
-
-;; LSP UI
-(use-package lsp-ui
+  :mode ("Dockerfile\\'" . dockerfile-mode)
+        ("\\.dockerfile\\'" . dockerfile-mode))
+(use-package nix-mode
   :ensure t
-  :after lsp-mode
-  :commands lsp-ui-mode
-  :hook (lsp-mode . lsp-ui-mode))
-
-;; Rust Mode
+  :mode "\\.nix\\'")
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
-
-;; Markdown mode
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -297,11 +261,27 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
-
-;; Grip mode
 (use-package grip-mode
   :ensure t
   :hook ((markdown-mode . grip-mode)))
+
+;; LSP Mode
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook ((python-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)
+         (nix-mode . lsp-deferred)
+	 (sh-mode . enable-lsp-in-sh-mode)
+	 (dockerfile-mode . lsp-deferred)
+	 (terraform-mode . lsp-deferred)))
+
+;; LSP UI
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :commands lsp-ui-mode
+  :hook (lsp-mode . lsp-ui-mode))
 
 (provide 'init)
 ;;; init.el ends here
