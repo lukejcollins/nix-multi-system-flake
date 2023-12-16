@@ -184,18 +184,20 @@
   :config
   (treemacs-load-theme "nerd-icons"))
 
-;;(defun my-treemacs-add-project-with-name ()
-;;  "Add a project to the Treemacs workspace with a custom name."
-;;  (interactive)
-;;  (let* ((path (read-directory-name "Project root: "))
-;;         (name (read-string "Project name: " (file-name-nondirectory (directory-file-name path))))
-;;         (project (list :name name :path path)))
-;;    (if (treemacs-workspace->is-empty?)
-;;        (treemacs-do-create-workspace)
-;;      (treemacs-do-add-project-to-workspace path name))))
+(defun my-treemacs-add-project-with-name ()
+  "Add a project to the Treemacs workspace with a custom name."
+  (interactive)
+  (let ((path (read-directory-name "Project root: "))
+        (name (read-string "Project name: ")))
+    ;; Ensure the path is valid
+    (when (and (file-directory-p path)
+               (file-exists-p path))
+      ;; Add project to workspace
+      (treemacs-do-add-project-to-workspace path name))))
 
-;;(with-eval-after-load 'treemacs
-;;  (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
+(with-eval-after-load 'treemacs
+  (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
+
 
 ;; Enable grip-mode
 (use-package grip-mode
