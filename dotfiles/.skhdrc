@@ -4,6 +4,9 @@ cmd - return : open -a alacritty
 # Lock screen
 cmd - escape : osascript -e 'tell application "System Events" to keystroke "q" using {command down, control down}'
 
+# Screenshot
+cmd - p : open -a Screenshot
+
 # Navigation
 cmd - left : yabai -m window --focus west
 cmd - down : yabai -m window --focus south
