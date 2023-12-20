@@ -274,7 +274,10 @@
          (nix-mode . lsp-deferred)
 	 (sh-mode . enable-lsp-in-sh-mode)
 	 (dockerfile-mode . lsp-deferred)
-	 (terraform-mode . lsp-deferred)))
+	 (terraform-mode . lsp-deferred))
+  :config
+    (setq lsp-rust-analyzer-cargo-watch-command "clippy")
+    (setq lsp-rust-analyzer-server-display-inlay-hints t))
 
 ;; LSP UI
 (use-package lsp-ui

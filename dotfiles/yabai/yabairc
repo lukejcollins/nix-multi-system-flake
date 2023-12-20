@@ -40,4 +40,10 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
 
 # Disable window management for System Preferences
-yabai -m rule --add title="^System Preferences$" manage=off
+yabai -m rule --add app="^System Settings$" manage=off
+
+# Disable window management for Activity Monitor
+yabai -m rule --add app="^Activity Monitor$" manage=off
+
+# Disable window management for Activity Monitor
+yabai -m rule --add app="^Finder$" manage=off

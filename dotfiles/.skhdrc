@@ -7,6 +7,18 @@ cmd - escape : osascript -e 'tell application "System Events" to keystroke "q" u
 # Screenshot
 cmd - p : open -a Screenshot
 
+# Open bluetooth
+cmd - b : open "x-apple.systempreferences:com.apple.BluetoothSettings"
+
+# Open wifi
+cmd - n : open "x-apple.systempreferences:com.apple.preference.network?Wi-Fi"
+
+# Open sound
+cmd - s : open "x-apple.systempreferences:com.apple.preference.sound"
+
+# Open displays
+cmd -d : open "x-apple.systempreferences:com.apple.Display"
+
 # Navigation
 cmd - left : yabai -m window --focus west
 cmd - down : yabai -m window --focus south
