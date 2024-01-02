@@ -31,7 +31,7 @@ in
   environment.systemPackages = with pkgs; [
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode
     shfmt postgresql docker-compose tailscale uebersicht gcc direnv neofetch colima
-    raycast python3Packages.python-lsp-server rnix-lsp nodePackages.bash-language-server
+    raycast python3Packages.python-lsp-server rnix-lsp nodePackages.bash-language-server zoom-us
     dockerfile-language-server-nodejs terraform-ls clippy awscli2
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {

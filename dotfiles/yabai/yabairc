@@ -47,3 +47,6 @@ yabai -m rule --add app="^Activity Monitor$" manage=off
 
 # Disable window management for Activity Monitor
 yabai -m rule --add app="^Finder$" manage=off
+
+# Disable window management for Activity Monitor
+yabai -m rule --add app="^zoom.us$" manage=off
