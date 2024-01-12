@@ -119,7 +119,15 @@ in
   # System configuration
   system = {
     stateVersion = 4;
-    defaults.NSGlobalDomain.AppleInterfaceStyle = "Dark";
+    defaults = {
+      NSGlobalDomain.AppleInterfaceStyle = "Dark";
+      dock = {
+        wvous-tl-corner = 1; # Top left corner
+        wvous-tr-corner = 1; # Top right corner
+        wvous-bl-corner = 1; # Bottom left corner
+        wvous-br-corner = 1; # Bottom right corner
+      };
+    };
     activationScripts.extraActivation.text = ''
       softwareupdate --install-rosetta --agree-to-license
     '';
