@@ -32,7 +32,7 @@ in
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip vscode
     shfmt postgresql docker-compose tailscale uebersicht gcc direnv neofetch colima
     raycast python3Packages.python-lsp-server rnix-lsp nodePackages.bash-language-server zoom-us
-    dockerfile-language-server-nodejs terraform-ls clippy awscli2 typst
+    dockerfile-language-server-nodejs terraform-ls clippy awscli2 typst utm
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
@@ -47,7 +47,7 @@ in
         epkgs.markdown-mode epkgs.grip-mode epkgs.dash epkgs.s epkgs.editorconfig
         epkgs.autothemer epkgs.rust-mode epkgs.lsp-mode epkgs.modus-themes
         epkgs.dashboard epkgs.direnv epkgs.projectile epkgs.nerd-icons
-        epkgs.doom-modeline epkgs.grip-mode epkgs.company epkgs.elfeed
+        epkgs.doom-modeline epkgs.grip-mode epkgs.company epkgs.elfeed epkgs.elfeed-protocol
       ];
     })
   ];
@@ -131,6 +131,8 @@ in
         wvous-tr-corner = 1; # Top right corner
         wvous-bl-corner = 1; # Bottom left corner
         wvous-br-corner = 1; # Bottom right corner
+        autohide = true;
+        autohide-delay = 86400.0;
       };
     };
     activationScripts.extraActivation.text = ''

@@ -126,11 +126,15 @@
 
   ;; Dashboard items to display
   (setq dashboard-items '((recents  . 5)
-                          (projects . 5)))
+                          (projects . 5)
+                          (agenda   . 5)))  ; Added agenda
 
   ;; Modify heading icons for certain dashboard items
   (dashboard-modify-heading-icons '((recents . "file-text")
                                     (bookmarks . "book")))
+
+  ;; Set Org agenda files
+  (setq org-agenda-files '("~/Documents/owncloud-org/"))
 
   ;; Set the footer message
   (setq dashboard-footer-messages '("I have no mouth, and I must scream")))
@@ -229,33 +233,46 @@
       ;; If there's an error, print a message (you can also log or take other actions)
       (error (message "Failed to load copilot: %s" err)))))
 
-;; Elfeed configuration
-(use-package elfeed
-  :ensure t)
+;; Define the function that will be added to the elfeed-update-finished-hook
+(defun my-elfeed-post-update-check ()
+  "Check if new entries have been added after update."
+  ;; Remove this hook immediately to prevent it from running again.
+  (remove-hook 'elfeed-update-finished-hook 'my-elfeed-post-update-check)
+  ;; Check if new entries have been added.
+  (let ((new-entries-count (elfeed-db-last-update))
+        (pre-update-count (elfeed-db-last-update-time)))
+    (unless (> new-entries-count pre-update-count)
+      ;; No new entries found, you can add code here to notify you or take other actions.
+      (message "No new Elfeed entries were added."))))
 
-(setq elfeed-feeds
-      '("https://news.ycombinator.com/rss"
-        "http://www.theverge.com/rss/index.xml"
-        "https://feeds.arstechnica.com/arstechnica/index"
-        "https://www.theregister.com/headlines.atom"
-        "https://www.phoronix.com/phoronix-rss.php"
-        "https://www.wired.com/feed/rss"
-        "http://rss.slashdot.org/Slashdot/slashdotMain"
-        "https://appleinsider.com/rss/news"
-        "https://www.engadget.com/rss.xml"
-        "https://daringfireball.net/feeds/main"
-        "https://lwn.net/headlines/rss"
-        "https://techcrunch.com/feed/"
-        "https://www.bleepingcomputer.com/feed/"
-        "https://www.techradar.com/uk/feeds.xml"
-        "http://feeds.feedburner.com/servethehome"))
-
-;; Update elfeed feeds on start
-(defun update-elfeed-feeds-on-start ()
+;; Define the update function that hooks into elfeed-update-finished-hook
+(defun my-elfeed-update-and-check ()
+  "Update Elfeed and stop updating if no new entries are found."
+  (interactive)
+  ;; Add a one-time hook to run after update finishes.
+  (add-hook 'elfeed-update-finished-hook 'my-elfeed-post-update-check)
+  ;; Perform the update.
   (elfeed-update))
 
-;; Add hook to update elfeed feeds on start
-(add-hook 'elfeed-search-mode-hook 'update-elfeed-feeds-on-start)
+;; Configure elfeed
+(use-package elfeed
+  :config
+  (setq elfeed-search-title-max-width 180)
+  (add-hook 'elfeed-search-mode-hook (lambda ()
+                                       (setq-local elfeed-search-title-max-width 180)
+                                       (elfeed-search-update :force)
+                                       ;; Call the check function after force update
+                                       (my-elfeed-update-and-check))))
+
+(use-package elfeed-protocol
+  :ensure t
+  :config
+  (elfeed-protocol-enable)
+  (setq elfeed-protocol-feeds '(("ttrss+http://rearrange5473@192.168.0.3:8280"
+                                 :password "32Y3TzPtHHKbUc")))
+  :custom
+  (setq elfeed-protocol-ttrss-maxsize 200) ;; Bigger than 200 is invalid
+  (setq elfeed-protocol-ttrss-fetch-category-as-tag t))
 
 ;;; Language Configuration ;;;
 ;;----------------------------;;
