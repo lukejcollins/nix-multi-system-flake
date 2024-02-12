@@ -28,3 +28,6 @@ alias nix-clean='nix-collect-garbage -d'
 
 # direnv hook
 eval "$(direnv hook zsh)"
+
+# pet alias
+alias snip='pet exec'
