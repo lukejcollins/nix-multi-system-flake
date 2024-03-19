@@ -107,6 +107,28 @@
   ;; Set exec-path in Emacs
   (setq exec-path (append paths exec-path)))
 
+;; Introduce backtab functionality for unindent
+(defun my-unindent-up-to-previous ()
+  "Unindent the current line to match the nearest lesser indentation level of the lines above."
+  (interactive)
+  (let ((current-indentation (current-indentation))
+        (target-indentation 0)
+        (searching t))
+    (save-excursion
+      ;; Loop to search upwards for a line with lesser indentation.
+      (while (and searching (not (bobp))) ;; bobp checks if beginning of buffer is reached.
+        (forward-line -1)
+        (let ((previous-line-indentation (current-indentation)))
+          (when (< previous-line-indentation current-indentation)
+            (setq target-indentation previous-line-indentation)
+            (setq searching nil)))))
+    ;; Only unindent if a target indentation level was found.
+    (when (and (not searching) (> current-indentation target-indentation))
+      (indent-line-to target-indentation))))
+
+;; Bind the function to Backtab (shift + tab)
+(define-key global-map [backtab] 'my-unindent-up-to-previous)
+
 
 ;;; App Configuration ;;;
 ;;----------------------------;;
@@ -291,6 +313,9 @@
 (use-package grip-mode
   :ensure t
   :hook ((markdown-mode . grip-mode)))
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml\\'" "\\.yaml\\'")
 
 ;; LSP Mode
 (use-package lsp-mode
@@ -301,7 +326,8 @@
          (nix-mode . lsp-deferred)
 	 (sh-mode . enable-lsp-in-sh-mode)
 	 (dockerfile-mode . lsp-deferred)
-	 (terraform-mode . lsp-deferred))
+	 (terraform-mode . lsp-deferred)
+	 (yaml-mode . lsp-deferred))
   :config
     (setq lsp-rust-analyzer-cargo-watch-command "clippy")
     (setq lsp-rust-analyzer-server-display-inlay-hints t))
