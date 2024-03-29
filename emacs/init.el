@@ -344,11 +344,7 @@
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
-  :hook ((lsp-mode . (lambda ()
-                       (when (eq major-mode 'python-mode)
-                         (require 'lsp-pyright)
-                         (lsp-pyright-enable))))
-         (rust-mode . lsp-deferred)
+  :hook ((rust-mode . lsp-deferred)
          (nix-mode . lsp-deferred)
          (sh-mode . enable-lsp-in-sh-mode)
          (dockerfile-mode . lsp-deferred)
@@ -368,7 +364,10 @@
 
 ;; Pyright
 (use-package lsp-pyright
-  :ensure t)
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred))))
 
 (provide 'init)
 ;;; init.el ends here
