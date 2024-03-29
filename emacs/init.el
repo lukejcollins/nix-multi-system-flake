@@ -344,7 +344,10 @@
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
-  :hook ((python-mode . lsp-deferred)
+  :hook ((lsp-mode . (lambda ()
+                       (when (eq major-mode 'python-mode)
+                         (require 'lsp-pyright)
+                         (lsp-pyright-enable))))
          (rust-mode . lsp-deferred)
          (nix-mode . lsp-deferred)
          (sh-mode . enable-lsp-in-sh-mode)
@@ -354,8 +357,7 @@
   :config
   (setq lsp-rust-analyzer-cargo-watch-command "clippy")
   (setq lsp-rust-analyzer-server-display-inlay-hints t)
-  (setq lsp-completion-enable nil)
-  (setq lsp-diagnostic-package :none))
+  (setq lsp-completion-enable nil))
 
 ;; LSP UI
 (use-package lsp-ui
@@ -363,6 +365,10 @@
   :after lsp-mode
   :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode))
+
+;; Pyright
+(use-package lsp-pyright
+  :ensure t)
 
 (provide 'init)
 ;;; init.el ends here
