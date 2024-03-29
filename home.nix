@@ -20,12 +20,6 @@ let
     rev = "017395a266aa15011c09e64e44a1c98ed91c478c";
   };
 
-  # Emacs Copilot Installation Definition
-  emacsCopilotSrc = builtins.fetchGit {
-    url = "https://github.com/zerolfx/copilot.el.git";
-    rev = "421703f5dd5218ec2a3aa23ddf09d5f13e5014c2";
-  };
-
 in
 {
   home = {
@@ -35,7 +29,7 @@ in
       EDITOR = "vim";
     };
 
-    packages = with pkgs; [
+    packages = [
       myPythonEnv
     ];
 
@@ -53,6 +47,5 @@ in
     file.".config/zellij/config.kdl".source = ./dotfiles/zellij/config.kdl;
     file."Library/Application Support/Übersicht/widgets/simple-bar".source = simpleBarWidget;
     file."/powerlevel10k".source = powerlevel10kSrc;
-    file.".emacsCopilot".source = emacsCopilotSrc;
   };
 }

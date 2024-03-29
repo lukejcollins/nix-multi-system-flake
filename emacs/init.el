@@ -203,7 +203,45 @@
 
   :bind (("M-x" . helm-M-x)
          ;; You can add more keybindings here if needed
+         ))
+
+;; Configure company
+(use-package company
+    :ensure t
+    :defer 0.1
+    :config
+    (global-company-mode t)
+    (setq-default
+        company-idle-delay 0.05
+        company-require-match nil
+        company-minimum-prefix-length 0
+
+        ;; get only preview
+        company-frontends '(company-preview-frontend)
+        ;; also get a drop down
+        ;; company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend)
         ))
+
+;; Configure codeium
+(use-package codeium
+    :ensure t
+    :init
+    (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+    :config
+    (setq use-dialog-box nil) ;; do not use popup boxes
+    (setq codeium-mode-line-enable
+        (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
+    (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
+    (setq codeium-api-enabled
+        (lambda (api)
+            (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
+    (defun my-codeium/document/text ()
+        (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (min (+ (point) 1000) (point-max))))
+    (defun my-codeium/document/cursor_offset ()
+        (codeium-utf8-byte-length
+            (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (point))))
+    (setq codeium/document/text 'my-codeium/document/text)
+    (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
 
 ;; Treemacs configuration
 (use-package treemacs
@@ -239,26 +277,6 @@
   :ensure t
   :config
   (setq vterm-max-scrollback 5000))
-
-;; Copilot configuration
-(let ((copilot-dir "~/.emacsCopilot")
-      (copilot-file "~/.emacsCopilot/copilot.el"))
-
-  ;; Check if the copilot.el file exists
-  (when (file-exists-p copilot-file)
-    
-    ;; Add the directory to the load-path
-    (add-to-list 'load-path copilot-dir)
-    
-    ;; Try to load the copilot module and catch any errors
-    (condition-case err
-        (progn
-          (require 'copilot)
-          (add-hook 'prog-mode-hook 'copilot-mode)
-          (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
-      
-      ;; If there's an error, print a message (you can also log or take other actions)
-      (error (message "Failed to load copilot: %s" err)))))
 
 ;; Configure elfeed
 (use-package elfeed
@@ -317,6 +335,11 @@
   :ensure t
   :mode "\\.yml\\'" "\\.yaml\\'")
 
+;; Enable Flycheck
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
 ;; LSP Mode
 (use-package lsp-mode
   :ensure t
@@ -324,13 +347,15 @@
   :hook ((python-mode . lsp-deferred)
          (rust-mode . lsp-deferred)
          (nix-mode . lsp-deferred)
-	 (sh-mode . enable-lsp-in-sh-mode)
-	 (dockerfile-mode . lsp-deferred)
-	 (terraform-mode . lsp-deferred)
-	 (yaml-mode . lsp-deferred))
+         (sh-mode . enable-lsp-in-sh-mode)
+         (dockerfile-mode . lsp-deferred)
+         (terraform-mode . lsp-deferred)
+         (yaml-mode . lsp-deferred))
   :config
-    (setq lsp-rust-analyzer-cargo-watch-command "clippy")
-    (setq lsp-rust-analyzer-server-display-inlay-hints t))
+  (setq lsp-rust-analyzer-cargo-watch-command "clippy")
+  (setq lsp-rust-analyzer-server-display-inlay-hints t)
+  (setq lsp-completion-enable nil)
+  (setq lsp-diagnostic-package :none))
 
 ;; LSP UI
 (use-package lsp-ui
@@ -338,11 +363,6 @@
   :after lsp-mode
   :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode))
-
-;; Enable company
-(use-package company
-  :ensure t
-  :init (global-company-mode))
 
 (provide 'init)
 ;;; init.el ends here
