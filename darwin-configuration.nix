@@ -50,6 +50,7 @@ in
         epkgs.dashboard epkgs.direnv epkgs.projectile epkgs.nerd-icons
         epkgs.doom-modeline epkgs.grip-mode epkgs.company epkgs.elfeed epkgs.elfeed-protocol
         epkgs.catppuccin-theme epkgs.yaml-mode epkgs.flycheck epkgs.lsp-pyright
+        epkgs.csv-mode
       ];
     })
   ];

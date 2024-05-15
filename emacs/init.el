@@ -174,6 +174,11 @@
   ;; but you can use any other Nerd Font if you want
   (nerd-icons-font-family "Symbols Nerd Font Mono"))
 
+(use-package csv-mode
+  :ensure t
+  :config
+  (csv-mode))
+
 ;; Projectile configuration
 (use-package projectile
   :ensure t
