@@ -2,12 +2,14 @@
   description = "A flake to handle multiple systems with a hierarchy";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
     home-manager.url = "github:nix-community/home-manager";
     darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin.inputs.home-manager.follows = "home-manager";
   };
 
-  outputs = { home-manager, nix-darwin, ... }:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }:
     {
       nixosConfigurations = {
         personal = {
@@ -36,11 +38,14 @@
             ./configuration.nix
             ./darwin/configuration.nix
             ./darwin/personal/configuration.nix
+            {
+            users.users."luke.collins".home = "/Users/luke.collins";
+            }
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.personal = {
+              home-manager.users."luke.collins" = {
                 imports = [
                   ./home.nix
                   ./darwin/home.nix
@@ -57,11 +62,14 @@
             ./configuration.nix
             ./darwin/configuration.nix
             ./darwin/work/configuration.nix
+            {
+            users.users."luke.collins".home = "/Users/luke.collins";
+            }
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.work = {
+              home-manager.users."luke.collins" = {
                 imports = [
                   ./home.nix
                   ./darwin/home.nix
