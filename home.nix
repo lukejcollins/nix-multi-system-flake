@@ -1,14 +1,6 @@
 { pkgs, lib, ... }:
 
 let
-  # Simple Bar Widget Installation Definition
-  simpleBarWidget = pkgs.fetchFromGitHub {
-    owner = "lukejcollins";
-    repo = "simple-bar";
-    rev = "b275b7499861590437faada2aff1a75e2a183945";
-    sha256 = "sha256-IlURi4lcLUHdzH/N3wN06oFMGJstFSqDjgRHCp3h6WQ="; # Replace with the actual SHA
-  };
-
   # Python Environment Definition
   myPythonEnv = pkgs.python3.withPackages (ps: with ps; [
     pynvim flake8 pylint black requests grip ratelimit typing unidecode
@@ -38,14 +30,10 @@ in
 
     # Set the file locations for the configuration files
     file.".config/alacritty/alacritty.yml".source = ./dotfiles/alacritty/alacritty.toml;
-    file.".config/yabai/yabairc".source = ./dotfiles/yabai/yabairc;
-    file.".skhdrc".source = ./dotfiles/.skhdrc;
-    file.".simplebarrc".source = ./dotfiles/.simplebarrc;
     file.".zshrc".source = ./dotfiles/.zshrc;
     file.".p10k.zsh".source = ./dotfiles/.p10k.zsh;
     file.".config/direnv/direnvrc".source = ./dotfiles/direnv/direnvrc;
     file.".config/zellij/config.kdl".source = ./dotfiles/zellij/config.kdl;
-    file."Library/Application Support/Übersicht/widgets/simple-bar".source = simpleBarWidget;
     file."/powerlevel10k".source = powerlevel10kSrc;
   };
 }
