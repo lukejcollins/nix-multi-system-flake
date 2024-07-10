@@ -17,7 +17,7 @@ in
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip zellij pet
     shfmt postgresql docker-compose tailscale gcc direnv neofetch nodePackages.pyright
     nil nodePackages.bash-language-server dockerfile-language-server-nodejs terraform-ls
-    clippy awscli2 typst yarn fzf spotify yaml-language-server act jq
+    clippy awscli2 typst yarn fzf spotify yaml-language-server act jq kubectl minikube
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
@@ -29,12 +29,11 @@ in
         epkgs.use-package epkgs.terraform-mode epkgs.flycheck epkgs.flycheck-inline
         epkgs.dockerfile-mode epkgs.nix-mode epkgs.treemacs epkgs.markdown-mode
         epkgs.treemacs-all-the-icons epkgs.modus-themes epkgs.helm epkgs.vterm
-        epkgs.markdown-mode epkgs.grip-mode epkgs.dash epkgs.s epkgs.editorconfig
-        epkgs.autothemer epkgs.rust-mode epkgs.lsp-mode epkgs.modus-themes
-        epkgs.dashboard epkgs.direnv epkgs.projectile epkgs.nerd-icons
-        epkgs.doom-modeline epkgs.grip-mode epkgs.company epkgs.elfeed epkgs.elfeed-protocol
+        epkgs.grip-mode epkgs.dash epkgs.s epkgs.editorconfig epkgs.autothemer
+        epkgs.rust-mode epkgs.lsp-mode epkgs.dashboard epkgs.direnv
+        epkgs.projectile epkgs.nerd-icons epkgs.doom-modeline epkgs.company
         epkgs.catppuccin-theme epkgs.yaml-mode epkgs.flycheck epkgs.lsp-pyright
-        epkgs.csv-mode
+        epkgs.csv-mode epkgs.codeium
       ];
     })
   ];

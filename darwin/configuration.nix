@@ -22,12 +22,10 @@ let
     '';
   };
 
-  rootConfig = import ../configuration.nix { inherit config pkgs; emacsPackage = pkgs.emacs29-macport; };
-  
 in
 { 
   # Install packages
-  environment.systemPackages = with pkgs; rootConfig.environment.systemPackages ++ [
+  environment.systemPackages = with pkgs; [
     uebersicht colima raycast utm
   ];
 

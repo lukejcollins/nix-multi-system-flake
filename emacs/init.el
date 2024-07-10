@@ -152,16 +152,11 @@
   (setq dashboard-set-file-icons t)
 
   ;; Dashboard items to display
-  (setq dashboard-items '((recents  . 5)
-                          (projects . 5)
-                          (agenda   . 5)))  ; Added agenda
+  (setq dashboard-items '((recents  . 5)))
 
   ;; Modify heading icons for certain dashboard items
   (dashboard-modify-heading-icons '((recents . "file-text")
                                     (bookmarks . "book")))
-
-  ;; Set Org agenda files
-  (setq org-agenda-files '("~/Documents/owncloud-org/"))
 
   ;; Set the footer message
   (setq dashboard-footer-messages '("I have no mouth, and I must scream")))
@@ -282,25 +277,6 @@
   :ensure t
   :config
   (setq vterm-max-scrollback 5000))
-
-;; Configure elfeed
-(use-package elfeed
-  :config
-  (global-set-key (kbd "M-A") 'elfeed-update)
-  (setq elfeed-search-title-max-width 180)
-  (add-hook 'elfeed-search-mode-hook (lambda ()
-                                       (setq-local elfeed-search-title-max-width 180)
-                                       (elfeed-search-update :force))))
-
-(use-package elfeed-protocol
-  :ensure t
-  :config
-  (elfeed-protocol-enable)
-  (setq elfeed-protocol-feeds '(("ttrss+http://rearrange5473@192.168.0.3:8280"
-                                 :password "32Y3TzPtHHKbUc")))
-  :custom
-  (setq elfeed-protocol-ttrss-maxsize 200) ;; Bigger than 200 is invalid
-  (setq elfeed-protocol-ttrss-fetch-category-as-tag t))
 
 ;;; Language Configuration ;;;
 ;;----------------------------;;
