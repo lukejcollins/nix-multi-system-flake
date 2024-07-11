@@ -22,6 +22,11 @@ in
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
 
+  # Install packages
+  environment.systemPackages = with pkgs; [
+    gnomeExtensions.forge
+  ];
+  
   hardware.nvidia = {
 
     # Modesetting is required.
