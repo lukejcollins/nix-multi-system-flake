@@ -43,6 +43,13 @@ in
       enable = true;
       package = pkgs.skhd;
     };
+
+    # Enable nix-daemon
+    nix-daemon = {
+      enable = true;
+    };
+  };
+
   };
 
   # Enable wallpaper service

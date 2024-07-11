@@ -29,7 +29,7 @@ in
     stateVersion = "23.11"; # Make sure this matches the Nixpkgs version you are using
 
     # Set the file locations for the configuration files
-    file.".config/alacritty/alacritty.yml".source = ./dotfiles/alacritty/alacritty.toml;
+    file.".config/alacritty/alacritty.toml".source = ./dotfiles/alacritty/alacritty.toml;
     file.".zshrc".source = ./dotfiles/.zshrc;
     file.".p10k.zsh".source = ./dotfiles/.p10k.zsh;
     file.".config/direnv/direnvrc".source = ./dotfiles/direnv/direnvrc;

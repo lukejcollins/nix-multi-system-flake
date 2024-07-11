@@ -53,11 +53,6 @@ in
 
   # Services configuration
   services = {
-    # Enable nix-daemon
-    nix-daemon = {
-      enable = true;
-    };
-
     # Enable tailscale
     tailscale = {
       enable = true;

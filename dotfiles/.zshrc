@@ -21,10 +21,16 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # flake build alias
-alias flake-build='darwin-rebuild switch --flake ~/git/nix-darwin-build'
+alias darwin-build='darwin-rebuild switch --flake ~/git/nix-darwin-build'
+alias nixos-personal-build='sudo nixos-rebuild switch --flake "$(pwd)#personal" && home-manager switch --flake "$(pwd)#personal" --extra-experimental-features nix-command --extra-experimental-features flakes'
+alias nixos-work-build='sudo nixos-rebuild switch --flake "$(pwd)#work" && home-manager switch --flake "$(pwd)#work" --extra-experimental-features nix-command --extra-experimental-features flakes'
 
 # nix clean alias
-alias nix-clean='nix-collect-garbage -d'
+alias darwin-clean='nix-collect-garbage -d'
+alias nixos-clean='sudo nix-env --delete-generations old -p /nix/var/nix/profiles/system && sudo nix-collect-garbage -d && flake-build'
+
+# Flake update
+alias flake-update='sudo nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes && flake-build'
 
 # direnv hook
 eval "$(direnv hook zsh)"
