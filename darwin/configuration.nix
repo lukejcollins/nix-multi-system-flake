@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  # Use uebersicht for desktop widgets
+  # Define Übersicht package
   uebersicht = pkgs.stdenv.mkDerivation {
     name = "uebersicht-1.6.82";
     buildInputs = [ pkgs.unzip pkgs.glibcLocales ];
@@ -23,7 +23,7 @@ let
   };
 
 in
-{ 
+{
   # Install packages
   environment.systemPackages = with pkgs; [
     uebersicht colima raycast utm
@@ -35,7 +35,6 @@ in
     yabai = {
       enable = true;
       package = pkgs.yabai;
-      extraConfig = "/Users/luke.collins/.config/yabai/yabairc";
     };
 
     # Enable skhd
@@ -43,14 +42,19 @@ in
       enable = true;
       package = pkgs.skhd;
     };
+
+    # Enable nix-daemon
+    nix-daemon = {
+      enable = true;
+    };
   };
 
   # Enable wallpaper service
-  launchd.user.agents = { 
+  launchd.user.agents = {
     # Enable Übersicht service
-    ubersicht = {
+    uebersicht = {
       serviceConfig = {
-	      Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht"; 
+        Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht";
         RunAtLoad = true;
         KeepAlive = false;
       };

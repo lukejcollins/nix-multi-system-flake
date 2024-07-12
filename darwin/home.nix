@@ -13,9 +13,11 @@ in
 {
   home = {
     # Set the file locations for the configuration files
-    file.".config/yabai/yabairc".source = ../dotfiles/yabai/yabairc;
-    file.".skhdrc".source = ../dotfiles/.skhdrc;
-    file.".simplebarrc".source = ../dotfiles/.simplebarrc;
-    file."Library/Application Support/Übersicht/widgets/simple-bar".source = simpleBarWidget;
+    file = {
+      ".config/yabai/yabairc".source = ./dotfiles/yabai/yabairc;
+      ".skhdrc".source = ./dotfiles/.skhdrc;
+      ".simplebarrc".source = ./dotfiles/.simplebarrc;
+      "Library/Application Support/Übersicht/widgets/simple-bar".source = simpleBarWidget;
+    };
   };
 }
