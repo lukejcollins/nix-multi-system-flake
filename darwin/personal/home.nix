@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
 let
-
+  # Placeholder for future variables or configurations
 in
 {
-  # Home Manager configuration goes here.
+  # Home Manager configuration
 }

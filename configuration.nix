@@ -1,12 +1,15 @@
 { config, pkgs, ... }:
 
 let
-  arch = pkgs.stdenv.hostPlatform.system;  # Get the current system architecture
+  # Get the current system architecture
+  arch = pkgs.stdenv.hostPlatform.system;
+
+  # Define Emacs package based on the system architecture
   emacsPackage = if arch == "aarch64-darwin" then
     pkgs.emacs29-macport
   else
     pkgs.emacs29;
-  
+
 in
 {
   # Allow unfree packages
@@ -18,32 +21,29 @@ in
     shfmt postgresql docker-compose tailscale gcc direnv neofetch pyright
     nil bash-language-server dockerfile-language-server-nodejs terraform-ls
     clippy awscli2 typst yarn fzf spotify yaml-language-server act jq kubectl minikube
-    # Install emacs with packages
+    # Install Emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
       defaultInitFile = true;
       alwaysEnsure = true;
       alwaysTangle = true;
       package = emacsPackage;
-      extraEmacsPackages = epkgs: [
-        epkgs.use-package epkgs.terraform-mode epkgs.flycheck epkgs.flycheck-inline
-        epkgs.dockerfile-mode epkgs.nix-mode epkgs.treemacs epkgs.markdown-mode
-        epkgs.treemacs-all-the-icons epkgs.modus-themes epkgs.helm epkgs.vterm
-        epkgs.grip-mode epkgs.dash epkgs.s epkgs.editorconfig epkgs.autothemer
-        epkgs.rust-mode epkgs.lsp-mode epkgs.dashboard epkgs.direnv
-        epkgs.projectile epkgs.nerd-icons epkgs.doom-modeline epkgs.company
-        epkgs.catppuccin-theme epkgs.yaml-mode epkgs.flycheck epkgs.lsp-pyright
-        epkgs.csv-mode epkgs.codeium
+      extraEmacsPackages = epkgs: with epkgs; [
+        use-package terraform-mode flycheck flycheck-inline dockerfile-mode
+        nix-mode treemacs markdown-mode treemacs-all-the-icons modus-themes
+        helm vterm grip-mode dash s editorconfig autothemer rust-mode lsp-mode
+        dashboard direnv projectile nerd-icons doom-modeline company
+        catppuccin-theme yaml-mode flycheck lsp-pyright csv-mode codeium
       ];
     })
   ];
- 
+
   # Install fonts
   fonts = {
     packages = [ pkgs.nerdfonts ];
   };
 
-  # Add emacs overlay
+  # Add Emacs overlay
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = "https://github.com/nix-community/emacs-overlay/archive/d194712b55853051456bc47f39facc39d03cbc40.tar.gz";
@@ -53,7 +53,7 @@ in
 
   # Services configuration
   services = {
-    # Enable tailscale
+    # Enable Tailscale
     tailscale = {
       enable = true;
     };

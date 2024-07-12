@@ -26,14 +26,16 @@ in
     ];
 
     # Set the default stateVersion to the latest version
-    stateVersion = "23.11"; # Make sure this matches the Nixpkgs version you are using
+    stateVersion = "23.11";
 
     # Set the file locations for the configuration files
-    file.".config/alacritty/alacritty.toml".source = ./dotfiles/alacritty/alacritty.toml;
-    file.".zshrc".source = ./dotfiles/.zshrc;
-    file.".p10k.zsh".source = ./dotfiles/.p10k.zsh;
-    file.".config/direnv/direnvrc".source = ./dotfiles/direnv/direnvrc;
-    file.".config/zellij/config.kdl".source = ./dotfiles/zellij/config.kdl;
-    file."/powerlevel10k".source = powerlevel10kSrc;
+    file = {
+      ".config/alacritty/alacritty.toml".source = ./dotfiles/alacritty/alacritty.toml;
+      ".zshrc".source = ./dotfiles/.zshrc;
+      ".p10k.zsh".source = ./dotfiles/.p10k.zsh;
+      ".config/direnv/direnvrc".source = ./dotfiles/direnv/direnvrc;
+      ".config/zellij/config.kdl".source = ./dotfiles/zellij/config.kdl;
+      "/powerlevel10k".source = powerlevel10kSrc;
+    };
   };
 }
