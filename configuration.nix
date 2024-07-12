@@ -15,8 +15,8 @@ in
   # Install packages
   environment.systemPackages = with pkgs; [
     vim git gh alacritty wget docker nodejs python3 python3Packages.pip zellij pet
-    shfmt postgresql docker-compose tailscale gcc direnv neofetch nodePackages.pyright
-    nil nodePackages.bash-language-server dockerfile-language-server-nodejs terraform-ls
+    shfmt postgresql docker-compose tailscale gcc direnv neofetch pyright
+    nil bash-language-server dockerfile-language-server-nodejs terraform-ls
     clippy awscli2 typst yarn fzf spotify yaml-language-server act jq kubectl minikube
     # Install emacs with packages
     (emacsWithPackagesFromUsePackage {

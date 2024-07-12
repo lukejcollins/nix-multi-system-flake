@@ -9,6 +9,7 @@
     };
     darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin.inputs.home-manager.follows = "home-manager";
   };
 
   outputs = { self, nixpkgs, home-manager, nix-darwin, ... }:
@@ -45,13 +46,13 @@
             ./darwin/configuration.nix
             ./darwin/personal/configuration.nix
             {
-            users.users."luke.collins".home = "/Users/luke.collins";
+            users.users."lukecollins".home = "/Users/lukecollins";
             }
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."luke.collins" = {
+              home-manager.users."lukecollins" = {
                 imports = [
                   ./home.nix
                   ./darwin/home.nix

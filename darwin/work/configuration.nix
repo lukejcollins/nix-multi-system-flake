@@ -18,6 +18,8 @@ in
     };
   };
 
+  services.yabai.extraConfig = "/Users/luke.collins/.config/yabai/yabairc";
+
   # Move files into place
   environment.etc."set-wallpaper.scpt".source = ./applescript/set-wallpaper.scpt;
 }

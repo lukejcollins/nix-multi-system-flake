@@ -50,8 +50,6 @@ in
     };
   };
 
-  };
-
   # Enable wallpaper service
   launchd.user.agents = { 
     # Enable Übersicht service
