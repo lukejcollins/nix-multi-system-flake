@@ -1,72 +1,136 @@
-[![nix-darwin](https://img.shields.io/badge/nix-darwin-blue.svg?logo=nixos)](https://github.com/LnL7/nix-darwin) [![macOS](https://img.shields.io/badge/-macOS-green.svg?logo=apple)](https://www.apple.com/macos/) 
+[![nix-darwin](https://img.shields.io/badge/nix-darwin-blue.svg?logo=nixos)](https://github.com/LnL7/nix-darwin)
+[![macOS](https://img.shields.io/badge/-macOS-green.svg?logo=apple)](https://www.apple.com/macos/)
+[![nixos](https://img.shields.io/badge/nixos-grey.svg?logo=nixos)](https://nixos.org/)
 
-# Deploying nix-darwin on a New Device
+# Multi-System Configuration with Nix
 
-This guide will walk you through deploying your nix-darwin configuration on a new device. nix-darwin is a tool for managing your macOS configuration with nix.
+This repository provides a unified configuration setup for both NixOS and macOS (via nix-darwin), catering to both personal and work environments. It leverages the power of Nix and flakes for a declarative and reproducible system configuration.
+
 <img width="1800" alt="image" src="https://github.com/lukejcollins/nix-darwin-build/assets/44213313/363d0b4e-c929-4d36-b237-d80f96ea488a">
+<p align="center"><em>An indication of the appearance of the nix-darwin build once properly deployed</em></p>
+
+## What are NixOS and nix-darwin?
+
+- **NixOS**: A Linux distribution built on top of the Nix package manager, designed for declarative configuration and reliable system upgrades.
+- **nix-darwin**: A tool for managing macOS configuration using the Nix package manager, similar to how NixOS configurations are managed.
+
+## How the Configuration Works
+
+The configuration is hierarchical, with root-level configuration files (`configuration.nix` & `home.nix`) that set up general settings and package installations that are OS agnostic. Each system type (NixOS and macOS) then has its own directory with specific configurations for personal and work environments.
+
+### Root Configuration
+
+The root `configuration.nix` and `home.nix` files include settings and packages common to all systems. This is where you define the core configuration, such as allowed packages, basic system settings, and shared services.
+
+### NixOS Configuration
+
+Under the `nixos` directory, there are subdirectories for personal and work configurations. Each of these contains `configuration.nix` and `home.nix` files that include device-specific settings and services, such as the bootloader configuration, hostname, and additional packages. The root of the `nixos` directory contains the device agnostic configuration for NixOS. 
+
+### macOS Configuration
+
+Similarly, under the `darwin` directory, there are subdirectories for personal and work configurations. Each of these contains `configuration.nix` and `home.nix` files tailored for macOS, managing services like yabai (tiling window manager) and other macOS-specific settings. The root of the `darwin` directory contains the device agnostic configuration for macOS. 
 
 ## Prerequisites
 
-Before you begin, make sure you have the following prerequisites:
+Before you begin, ensure you have the following:
 
-1. A macOS device.
-2. Nix for macOS installed.
+1. For macOS:
+   - A macOS device.
+   - nix-darwin installed on macOS.
 
-## Step 1: Clone Your nix-darwin Repository
+2. For NixOS:
+   - A running NixOS installation.
 
-Clone your nix-darwin repository to your new device. You can use a command like this:
+## Step 1: Clone the Repository
+
+Clone this repository to your device:
 
 ```bash
-git clone https://github.com/lukejcollins/nix-darwin-build ~/git
+git clone https://github.com/lukejcollins/nix-darwin-build
 ```
 
-## Step 2: Update Hostname and Username
+## Step 2: Update Username
 
-Your nix-darwin configuration will contain references to hostnames and usernames specific to your device. You'll need to update the files to match your device. Here's where you should make the changes:
+Update the username references in your configuration files to match your device.
 
 ### `flake.nix`
 
-In your `flake.nix`, look for the following lines:
+Update the device-specific details:
 
 ```nix
-darwinConfigurations."OVO-VHG17X6V24" = nix-darwin.lib.darwinSystem {
-  # ...
   modules = [
     # ...
     {
-      users.users."luke.collins".home = "/Users/luke.collins";
+      users.users."your.username".home = "/Users/your.username";
     }
     # ...
   ];
-};
 ```
 
-Replace `"OVO-VHG17X6V24"` with your your device's hostname, and `"luke.collins"` with your username.
-
-Ensure that any paths or configurations specific to your previous device are updated to match the paths on your new device.
+Replace `"your.username"` with your username. Ensure all paths and configurations specific to your device are updated accordingly.
 
 ## Step 3: Deploy Your Configuration
 
-Once you've updated your configuration files, you can deploy your nix-darwin configuration on the new device. Familiarise yourself on how to do this as per the [nix-darwin repo instructions](https://github.com/LnL7/nix-darwin).
+Deploy the configuration to your device. Follow the instructions from the [nix-darwin repository](https://github.com/LnL7/nix-darwin) or NixOS manual for detailed steps. I have also included some aliases in .zshrc to make this as easy as possible, referenced below.
 
-## Step 4: Additional configuration and advice (optional)
+## Step 4: Additional Configuration and Advice (Optional)
 
-* **Raycast:** macOS Spotlight cannot locate apps installed via nix-darwin. For this I prefer to use Raycast, which can locate these applications. Raycast is installed by the default configuration of this repo. For advice on how to replace macOS Spotlight with Raycast, follow the instructions [here](https://manual.raycast.com/hotkey).
-*  **Menu Bar:** In order to stop the macOS menu bar from interfering with Simple Bar, you can follow the instructions [here](https://www.howtogeek.com/700398/how-to-automatically-hide-or-show-the-menu-bar-on-a-mac/) to set the menu bar to hide automatically. The menu bar can still be accessed by moving the cursor to the top of the screen.
-*  **Yabai:** The configuration for yabai (tiling window manager) is defined in `/nix-darwin-build/dotfiles/yabai/yabairc`. This configuration is quite specific to my preferences, so make sure this configured to your preferences. You will at the very least update the config directory in `darwin-configuration.nix` to be specific to your system, which should just be a matter of updating the username.
-```nix
-# Enable yabai
-yabai = {
-  enable = true;
-  package = pkgs.yabai;
-  extraConfig = "/Users/lukecollins/.config/yabai/yabairc";
-};
+The NixOS configuration is mostly ready to go out of the box. The nix-darwin configuration, due to the nature of the platform, will require a little more massaging to get going. Here's a starter for ten:
+
+- **Raycast**: Use Raycast to replace macOS Spotlight for better integration with nix-darwin applications. Raycast is included in the default configuration. Follow [these instructions](https://manual.raycast.com/hotkey) to set it up.
+- **Menu Bar**: Set the macOS menu bar to hide automatically to avoid interference with Simple Bar. Follow [this guide](https://www.howtogeek.com/700398/how-to-automatically-hide-or-show-the-menu-bar-on-a-mac/).
+- **Yabai**: Configure Yabai (tiling window manager) in `/nix-darwin-build/dotfiles/yabai/yabairc`. Ensure paths and settings are updated to match your system.
+
+  ```nix
+  # Enable Yabai
+  yabai = {
+    enable = true;
+    package = pkgs.yabai;
+    extraConfig = "/Users/your.username/.config/yabai/yabairc";
+  };
+  ```
+  
+- **General Configuration**: Review and update other configuration files in the repository to suit your preferences. Contributions and suggestions are welcome.
+
+## Step 5: Enjoy Your Setup
+
+Your configuration should now be applied. Enjoy the benefits of a declarative and reproducible system configuration!
+
+## Maintenance Commands
+
+Aliases for maintaining the flake across Darwin and NixOS are included in `.zshrc`:
+
+### Build Aliases
+
+```sh
+# Darwin Personal Build
+alias darwin-personal-build='darwin-rebuild switch --flake "$(pwd)#personal"'
+
+# Darwin Work Build
+alias darwin-work-build='darwin-rebuild switch --flake "$(pwd)#work"'
+
+# NixOS Personal Build
+alias nixos-personal-build='sudo nixos-rebuild switch --flake "$(pwd)#personal" && home-manager switch --flake "$(pwd)#personal" --extra-experimental-features nix-command --extra-experimental-features flakes'
+
+# NixOS Work Build
+alias nixos-work-build='sudo nixos-rebuild switch --flake "$(pwd)#work" && home-manager switch --flake "$(pwd)#work" --extra-experimental-features nix-command --extra-experimental-features flakes'
 ```
-*  **Emacs Github Copilot:** I'm using a Github Copilot plugin for Emacs. Configuration and details for this can be found [here](https://github.com/copilot-emacs/copilot.el).
-*  **Everything else:** There is plenty of extra configuration to do, so dig in and check all of the files in the repo. I will update this README as time goes on to highlight particular points of interest. Feel free to raise a PR or issue to flag anything you'd like added.
 
-## Step 5: Enjoy Your nix-darwin Setup
+### Cleaning Aliases
 
-Your nix-darwin configuration should now be applied to your new device. Enjoy the benefits of a declarative and reproducible macOS configuration!
+```sh
+# Darwin Clean
+alias darwin-clean='nix-collect-garbage -d'
 
-For more information and advanced usage of nix-darwin, refer to the [official nix-darwin documentation](https://github.com/LnL7/nix-darwin).
+# NixOS Clean
+alias nixos-clean='sudo nix-env --delete-generations old -p /nix/var/nix/profiles/system && sudo nix-collect-garbage -d && flake-build'
+```
+
+### Flake Update
+
+```sh
+# Flake Update
+alias flake-update='sudo nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes'
+```
+
+For more information and advanced usage, refer to the [official NixOS documentation](https://nixos.org/) and [nix-darwin documentation](https://github.com/LnL7/nix-darwin).
