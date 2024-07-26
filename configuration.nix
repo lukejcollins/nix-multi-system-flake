@@ -33,7 +33,7 @@ in
         nix-mode treemacs markdown-mode treemacs-all-the-icons modus-themes
         helm vterm grip-mode dash s editorconfig autothemer rust-mode lsp-mode
         dashboard direnv projectile nerd-icons doom-modeline company
-        catppuccin-theme yaml-mode flycheck lsp-pyright csv-mode codeium
+        catppuccin-theme yaml-mode flycheck csv-mode codeium
       ];
     })
   ];

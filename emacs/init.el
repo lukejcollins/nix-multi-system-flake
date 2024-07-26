@@ -330,11 +330,18 @@
          (sh-mode . enable-lsp-in-sh-mode)
          (dockerfile-mode . lsp-deferred)
          (terraform-mode . lsp-deferred)
-         (yaml-mode . lsp-deferred))
+         (yaml-mode . lsp-deferred)
+	 (python-mode . lsp-deferred))
   :config
   (setq lsp-rust-analyzer-cargo-watch-command "clippy")
   (setq lsp-rust-analyzer-server-display-inlay-hints t)
-  (setq lsp-completion-enable nil))
+  (setq lsp-completion-enable nil)
+  (setq lsp-pylsp-plugins-flake8-enabled t
+        lsp-pylsp-plugins-black-enabled t
+	lsp-pylsp-plugins-isort-enabled t
+	lsp-pylsp-plugins-mypy-enabled t
+        lsp-pylsp-plugins-mypy-live-mode t
+	lsp-pylsp-plugins-pylint-enabled t))
 
 ;; LSP UI
 (use-package lsp-ui
@@ -342,13 +349,6 @@
   :after lsp-mode
   :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode))
-
-;; Pyright
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred))))
 
 (provide 'init)
 ;;; init.el ends here
