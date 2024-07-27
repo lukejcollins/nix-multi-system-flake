@@ -60,6 +60,7 @@ in
       ms-python.pylint
       matangover.mypy
       ms-python.isort
+      amazonwebservices.amazon-q-vscode
     ];
 
     mutableExtensionsDir = false;
@@ -90,6 +91,17 @@ in
         "editor.formatOnSave" = true;
       };
       "flake8.args" = ["--max-line-length=120"];
+      "amazonQ.telemetry" = false;
+      "amazonQ.shareContentWithAWS" = false;
+      "amazonQ.workspaceIndex" = true;
+      "amazonQ.workspaceIndexUseGPU" = true;
     };
+
+    keybindings = [
+      {
+        key = "ctrl+x ctrl+s";
+        command = "workbench.action.files.save";
+      }
+    ];
   };
 }
