@@ -18,7 +18,7 @@ in
 
   # Install packages
   environment.systemPackages = with pkgs; [
-    home-manager xwayland
+    home-manager xwayland google-chrome
   ];
 
   # Networking configuration
