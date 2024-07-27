@@ -14,9 +14,12 @@
     # Fetch nix-darwin and make it follow nixpkgs and home-manager
     darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Install vscode extensions
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }: {
+  outputs = { self, nixpkgs, home-manager, nix-darwin, nix-vscode-extensions, ... }: {
     # NixOS configurations for personal and work systems
     nixosConfigurations = {
       personal = nixpkgs.lib.nixosSystem {
@@ -65,6 +68,11 @@
               ];
             };
           }
+          {
+            nixpkgs.overlays = [
+              nix-vscode-extensions.overlays.default
+            ];
+          }
         ];
       };
 
@@ -89,6 +97,11 @@
               ];
             };
           }
+          {
+            nixpkgs.overlays = [
+              nix-vscode-extensions.overlays.default
+            ];
+          }
         ];
       };
     };
@@ -106,6 +119,11 @@
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
           }
+          {
+            nixpkgs.overlays = [
+              nix-vscode-extensions.overlays.default
+            ];
+          }
         ];
       };
 
@@ -119,6 +137,11 @@
             # State version and user-specific settings
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
+          }
+          {
+            nixpkgs.overlays = [
+              nix-vscode-extensions.overlays.default
+            ];
           }
         ];
       };

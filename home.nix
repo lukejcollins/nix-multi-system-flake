@@ -26,9 +26,6 @@ in
       myPythonEnv
     ];
 
-    # Set the default stateVersion to the latest version
-    stateVersion = "23.11";
-
     # Set the file locations for the configuration files
     file = {
       ".config/alacritty/alacritty.toml".source = ./dotfiles/alacritty/alacritty.toml;
@@ -37,6 +34,62 @@ in
       ".config/direnv/direnvrc".source = ./dotfiles/direnv/direnvrc;
       ".config/zellij/config.kdl".source = ./dotfiles/zellij/config.kdl;
       "/powerlevel10k".source = powerlevel10kSrc;
+    };
+
+    # Set the default stateVersion to the latest version
+    stateVersion = "23.11";
+  };
+
+  programs.vscode = {
+    enable = true;
+
+    extensions = with pkgs.vscode-marketplace; [
+      ms-azuretools.vscode-docker
+      timonwong.shellcheck
+      rust-lang.rust-analyzer
+      yzhang.markdown-all-in-one
+      davidanson.vscode-markdownlint
+      redhat.vscode-yaml
+      jnoortheen.nix-ide
+      ms-python.python
+      hashicorp.terraform
+      mechatroner.rainbow-csv
+      jnoortheen.nix-ide
+      ms-python.black-formatter
+      ms-python.flake8
+      ms-python.pylint
+      matangover.mypy
+      ms-python.isort
+    ];
+
+    mutableExtensionsDir = false;
+
+    userSettings = {
+      "editor.tabSize" = 4;
+      "editor.formatOnSave" = true;
+
+      "[rust]" = {
+        "editor.formatOnSave" = true;
+      };
+      "[nix]" = {
+        "editor.formatOnSave" = true;
+      };
+      "[sh]" = {
+        "editor.formatOnSave" = true;
+      };
+      "[dockerfile]" = {
+        "editor.formatOnSave" = true;
+      };
+      "[terraform]" = {
+        "editor.formatOnSave" = true;
+      };
+      "[yaml]" = {
+        "editor.formatOnSave" = true;
+      };
+      "[python]" = {
+        "editor.formatOnSave" = true;
+      };
+      "flake8.args" = ["--max-line-length=120"];
     };
   };
 }
