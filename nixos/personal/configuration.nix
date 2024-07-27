@@ -9,42 +9,48 @@ in
     ./hardware-configuration.nix
   ];
 
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  # Enable programs
-  programs.steam.enable = true;
-
-  # Load Nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
-
-  # Install packages
-  environment.systemPackages = with pkgs; [
-    gnomeExtensions.forge
-  ];
-
-  # Nvidia hardware configuration
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement = {
-      enable = false;
-      finegrained = false;
+  # Hardware configuration
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
     };
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
+      open = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+    };
   };
 
-  # Enable the X11 windowing system
-  services.xserver = {
-    enable = true;
-    layout = "us";
-    xkbVariant = "";
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+  # Services configuration
+  services = {
+    xserver = {
+      enable = true;
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+      videoDrivers = ["nvidia"];
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
+    };
+  };
+
+  # Programs configuration
+  programs = {
+    steam.enable = true;
+  };
+
+  # Environment configuration
+  environment = {
+    systemPackages = with pkgs; [
+      gnomeExtensions.forge
+    ];
   };
 }
