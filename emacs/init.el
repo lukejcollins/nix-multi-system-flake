@@ -341,7 +341,8 @@
 	lsp-pylsp-plugins-isort-enabled t
 	lsp-pylsp-plugins-mypy-enabled t
         lsp-pylsp-plugins-mypy-live-mode t
-	lsp-pylsp-plugins-pylint-enabled t))
+	lsp-pylsp-plugins-pylint-enabled t
+	lsp-pylsp-plugins-flake8-max-line-length 88))
 
 ;; LSP UI
 (use-package lsp-ui
