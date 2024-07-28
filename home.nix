@@ -61,6 +61,7 @@ in
       matangover.mypy
       ms-python.isort
       amazonwebservices.amazon-q-vscode
+      ms-vsliveshare.vsliveshare
     ];
 
     mutableExtensionsDir = false;
