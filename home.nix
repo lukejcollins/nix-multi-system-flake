@@ -90,7 +90,7 @@ in
       "[python]" = {
         "editor.formatOnSave" = true;
       };
-      "flake8.args" = ["--max-line-length=120"];
+      "flake8.args" = ["--max-line-length=88"];
       "amazonQ.telemetry" = false;
       "amazonQ.shareContentWithAWS" = false;
       "amazonQ.workspaceIndex" = true;
