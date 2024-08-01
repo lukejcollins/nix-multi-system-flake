@@ -40,4 +40,4 @@ eval "$(direnv hook zsh)"
 alias snip='pet exec'
 
 # eza alias
-alias ls="eza -l --git --header --icons=always --git-repos --tree"
+alias eza="eza -l --git --header --icons=always --git-repos"
