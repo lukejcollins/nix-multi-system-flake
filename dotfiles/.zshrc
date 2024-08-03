@@ -28,7 +28,7 @@ alias nixos-work-build='sudo nixos-rebuild switch --flake "$(pwd)#work" && home-
 
 # nix clean alias
 alias darwin-clean='nix-collect-garbage -d'
-alias nixos-clean='sudo nix-env --delete-generations old -p /nix/var/nix/profiles/system && sudo nix-collect-garbage -d && flake-build'
+alias nixos-clean='sudo nix-env --delete-generations old -p /nix/var/nix/profiles/system && sudo nix-collect-garbage -d'
 
 # Flake update
 alias flake-update='sudo nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes'
