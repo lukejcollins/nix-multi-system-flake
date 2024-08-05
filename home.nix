@@ -4,7 +4,7 @@ let
   # Python Environment Definition
   myPythonEnv = pkgs.python3.withPackages (ps: with ps; [
     pynvim flake8 pylint black requests grip ratelimit typing unidecode python-lsp-server
-    isort pyls-isort pylsp-mypy mypy types-requests python-lsp-black
+    isort pyls-isort pylsp-mypy mypy types-requests python-lsp-black django-stubs boto3-stubs
   ]);
 
   # Powerlevel10k Installation Definition
