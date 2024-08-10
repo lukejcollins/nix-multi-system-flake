@@ -21,7 +21,7 @@ in
     shfmt postgresql docker-compose tailscale gcc direnv neofetch pyright
     nil bash-language-server dockerfile-language-server-nodejs terraform-ls
     clippy awscli2 typst yarn fzf spotify yaml-language-server act jq kubectl minikube
-    aws-nuke tre-command fzf bat eza terraform
+    aws-nuke tre-command fzf bat eza terraform emmet-ls
     # Install Emacs with packages
     (emacsWithPackagesFromUsePackage {
       config = ./emacs/init.el;
@@ -34,7 +34,7 @@ in
         nix-mode treemacs markdown-mode treemacs-all-the-icons modus-themes
         helm vterm grip-mode dash s editorconfig autothemer rust-mode lsp-mode
         dashboard direnv projectile nerd-icons doom-modeline company
-        catppuccin-theme yaml-mode flycheck csv-mode codeium
+        catppuccin-theme yaml-mode flycheck csv-mode codeium web-mode
       ];
     })
   ];

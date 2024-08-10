@@ -315,6 +315,19 @@
 (use-package yaml-mode
   :ensure t
   :mode "\\.yml\\'" "\\.yaml\\'")
+(use-package web-mode
+  :ensure t
+  :mode ("\\.html?\\'" . web-mode)
+  :init
+  (setq web-mode-enable-auto-quoting nil)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-auto-close-style 2))
+(use-package css-mode
+  :ensure nil
+  :mode ("\\.css\\'" . css-mode)
+  :init
+  (setq css-indent-offset 2))
 
 ;; Enable Flycheck
 (use-package flycheck
@@ -331,7 +344,10 @@
          (dockerfile-mode . lsp-deferred)
          (terraform-mode . lsp-deferred)
          (yaml-mode . lsp-deferred)
-	 (python-mode . lsp-deferred))
+         (python-mode . lsp-deferred)
+         (web-mode . lsp-deferred)
+         (css-mode . lsp-deferred))
+
   :config
   (setq lsp-rust-analyzer-cargo-watch-command "clippy")
   (setq lsp-rust-analyzer-server-display-inlay-hints t)
