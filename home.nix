@@ -62,6 +62,7 @@ in
       ms-python.isort
       amazonwebservices.amazon-q-vscode
       ms-vsliveshare.vsliveshare
+      github.vscode-github-actions
     ];
 
     mutableExtensionsDir = false;
