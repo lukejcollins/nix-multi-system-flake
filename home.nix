@@ -64,6 +64,7 @@ in
       ms-vsliveshare.vsliveshare
       github.vscode-github-actions
       ms-dotnettools.vscode-dotnet-pack
+      ms-dotnettools.csdevkit
     ];
 
     mutableExtensionsDir = false;
