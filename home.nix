@@ -63,12 +63,9 @@ in
       amazonwebservices.amazon-q-vscode
       ms-vsliveshare.vsliveshare
       github.vscode-github-actions
-      ms-dotnettools.vscode-dotnet-pack
-      ms-dotnettools.csdevkit
-      ms-dotnettools.csharp
     ];
 
-    mutableExtensionsDir = false;
+    mutableExtensionsDir = true;
 
     userSettings = {
       "editor.tabSize" = 4;
