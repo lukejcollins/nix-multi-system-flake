@@ -41,3 +41,6 @@ alias snip='pet exec'
 
 # eza alias
 alias eza="eza -l --git --header --icons=always --git-repos"
+
+# dotnet to path
+export PATH="$PATH:/usr/local/share/dotnet"

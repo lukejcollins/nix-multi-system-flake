@@ -63,6 +63,7 @@ in
       amazonwebservices.amazon-q-vscode
       ms-vsliveshare.vsliveshare
       github.vscode-github-actions
+      ms-azuretools.vscode-azureappservice
     ];
 
     mutableExtensionsDir = true;
