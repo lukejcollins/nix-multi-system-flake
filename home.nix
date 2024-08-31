@@ -67,6 +67,7 @@ in
       ms-azuretools.vscode-azureappservice
       ms-vscode.powershell
       azps-tools.azps-tools
+      ms-vscode.azurecli
     ];
 
     mutableExtensionsDir = true;
