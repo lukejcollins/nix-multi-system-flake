@@ -65,6 +65,8 @@ in
       ms-vsliveshare.vsliveshare
       github.vscode-github-actions
       ms-azuretools.vscode-azureappservice
+      ms-vscode.powershell
+      azps-tools.azps-tools
     ];
 
     mutableExtensionsDir = true;
