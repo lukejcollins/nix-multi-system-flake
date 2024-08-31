@@ -68,6 +68,7 @@ in
       ms-vscode.powershell
       azps-tools.azps-tools
       ms-vscode.azurecli
+      msazurermtools.azurerm-vscode-tools
     ];
 
     mutableExtensionsDir = true;
