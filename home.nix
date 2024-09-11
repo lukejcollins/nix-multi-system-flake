@@ -69,6 +69,8 @@ in
       azps-tools.azps-tools
       ms-vscode.azurecli
       msazurermtools.azurerm-vscode-tools
+      ms-azuretools.vscode-azurefunctions
+      ms-azuretools.vscode-azureresourcegroups
     ];
 
     mutableExtensionsDir = true;
@@ -76,6 +78,7 @@ in
     userSettings = {
       "editor.tabSize" = 4;
       "editor.formatOnSave" = true;
+      "terminal.integrated.fontFamily" = "MesloLGS Nerd Font";
 
       "[rust]" = {
         "editor.formatOnSave" = true;

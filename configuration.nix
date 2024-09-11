@@ -22,6 +22,7 @@ in
     nil bash-language-server dockerfile-language-server-nodejs terraform-ls
     clippy awscli2 typst yarn fzf spotify yaml-language-server act jq kubectl minikube
     aws-nuke tre-command fzf bat eza terraform emmet-ls poetry azure-cli powershell
+    azure-functions-core-tools
     # aws-sam-cli failing to build
     # Install Emacs with packages
     (emacsWithPackagesFromUsePackage {
