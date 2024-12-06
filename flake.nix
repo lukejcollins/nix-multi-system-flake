@@ -25,10 +25,10 @@
       personal = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./configuration.nix
-          ./nixos/configuration.nix
-          ./nixos/personal/configuration.nix
-          ./nixos/personal/hardware-configuration.nix
+          ./unix/configuration.nix
+          ./unix/nixos/configuration.nix
+          ./unix/nixos/personal/configuration.nix
+          ./unix/nixos/personal/hardware-configuration.nix
           home-manager.nixosModules.home-manager
         ];
       };
@@ -36,10 +36,10 @@
       work = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./configuration.nix
-          ./nixos/configuration.nix
-          ./nixos/work/configuration.nix
-          ./nixos/work/hardware-configuration.nix
+          ./unix/configuration.nix
+          ./unix/nixos/configuration.nix
+          ./unix/nixos/work/configuration.nix
+          ./unix/nixos/work/hardware-configuration.nix
           home-manager.nixosModules.home-manager
         ];
       };
@@ -50,9 +50,9 @@
       personal = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./configuration.nix
-          ./darwin/configuration.nix
-          ./darwin/personal/configuration.nix
+          ./unix/configuration.nix
+          ./unix/darwin/configuration.nix
+          ./unix/darwin/personal/configuration.nix
           {
             users.users."lukecollins".home = "/Users/lukecollins";
           }
@@ -63,8 +63,9 @@
             home-manager.users."lukecollins" = {
               imports = [
                 ./home.nix
-                ./darwin/home.nix
-                ./darwin/personal/home.nix
+                ./unix/home.nix
+                ./unix/darwin/home.nix
+                ./unix/darwin/personal/home.nix
               ];
             };
           }
@@ -79,9 +80,9 @@
       work = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./configuration.nix
-          ./darwin/configuration.nix
-          ./darwin/work/configuration.nix
+          ./unix/configuration.nix
+          ./unix/darwin/configuration.nix
+          ./unix/darwin/work/configuration.nix
           {
             users.users."luke.collins".home = "/Users/luke.collins";
           }
@@ -92,8 +93,9 @@
             home-manager.users."luke.collins" = {
               imports = [
                 ./home.nix
-                ./darwin/home.nix
-                ./darwin/work/home.nix
+                ./unix/home.nix
+                ./unix/darwin/home.nix
+                ./unix/darwin/work/home.nix
               ];
             };
           }
@@ -106,14 +108,15 @@
       };
     };
 
-    # Home Manager configurations for personal and work systems
+    # Home Manager configurations for unix personal, unix work and wsl systems
     homeConfigurations = {
       personal = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home.nix
-          ./nixos/home.nix
-          ./nixos/personal/home.nix
+          ./unix/home.nix
+          ./unix/nixos/home.nix
+          ./unix/nixos/personal/home.nix
           {
             # State version and user-specific settings
             home.username = "lukecollins";
@@ -131,8 +134,9 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home.nix
-          ./nixos/home.nix
-          ./nixos/work/home.nix
+          ./unix/home.nix
+          ./unix/nixos/home.nix
+          ./unix/nixos/work/home.nix
           {
             # State version and user-specific settings
             home.username = "lukecollins";
@@ -142,6 +146,19 @@
             nixpkgs.overlays = [
               nix-vscode-extensions.overlays.default
             ];
+          }
+        ];
+      };
+
+      wsl = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./home.nix
+          ./wsl/home.nix
+          {
+            # State version and user-specific settings
+            home.username = "lukecollins";
+            home.homeDirectory = "/home/lukecollins";
           }
         ];
       };
