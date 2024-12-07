@@ -9,6 +9,6 @@ in
   };
 
   home.packages = with pkgs; [
-    zsh direnv gh
+    zsh direnv gh zellij home-manager
   ];
 }
