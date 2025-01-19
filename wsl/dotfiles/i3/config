@@ -103,7 +103,7 @@ bindsym Mod1+f fullscreen toggle
 # change container layout (stacked, tabbed, toggle split)
 bindsym Mod1+s layout stacking
 bindsym Mod1+w layout tabbed
-bindsym Mod1+e layout toggle split
+bindsym Mod1+q layout toggle split
 
 # toggle tiling / floating
 bindsym Mod1+Shift+space floating toggle
@@ -210,6 +210,9 @@ exec_always --no-startup-id feh --bg-scale /home/lukecollins/Pictures/nixos-wall
 
 # Start resize script
 exec --no-startup-id /home/lukecollins/bin/xresize.sh
+
+# Emacs hotkeyu
+bindsym Mod1+e exec emacs
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
