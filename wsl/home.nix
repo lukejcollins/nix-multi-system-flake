@@ -32,5 +32,6 @@ in
     file.".emacs.d/init.el".source = ./emacs/init.el;
     file.".config/i3/config".source = ./dotfiles/i3/config;
     file.".config/polybar/config.ini".source = ./dotfiles/polybar/config.ini;
+    file."bin/xresize.sh".source = ./scripts/xresize.sh;
   };
 }

@@ -208,6 +208,9 @@ exec --no-startup-id polybar
 # Set wallpaper
 exec_always --no-startup-id feh --bg-scale /home/lukecollins/Pictures/nixos-wallpaper-catppuccin-mocha.png
 
+# Start resize script
+exec --no-startup-id /home/lukecollins/bin/xresize.sh
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 #bar {
