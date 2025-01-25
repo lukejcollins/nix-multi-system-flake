@@ -26,8 +26,12 @@ in
 
   home = {
     packages = with pkgs; [ zsh direnv gh zellij home-manager iperf3 
-                            nerd-fonts.symbols-only xdotool neofetch ];
+                            nerd-fonts.symbols-only neofetch wget
+                            polybar feh
+                          ];
     file.".emacs.d/init.el".source = ./emacs/init.el;
-    file."bin/fullscreen.sh".source = ./scripts/fullscreen.sh;
+    file.".config/i3/config".source = ./dotfiles/i3/config;
+    file.".config/polybar/config.ini".source = ./dotfiles/polybar/config.ini;
+    file."bin/xresize.sh".source = ./scripts/xresize.sh;
   };
 }
