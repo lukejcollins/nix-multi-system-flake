@@ -21,7 +21,7 @@ in
     shfmt postgresql docker-compose tailscale gcc direnv neofetch pyright
     nil bash-language-server dockerfile-language-server-nodejs terraform-ls
     clippy awscli2 typst yarn fzf spotify yaml-language-server act jq kubectl minikube
-    aws-nuke tre-command fzf bat eza terraform emmet-ls poetry azure-cli powershell
+    aws-nuke tre-command fzf bat eza terraform emmet-ls poetry powershell
     azure-functions-core-tools
     # aws-sam-cli failing to build
     # Install Emacs with packages
@@ -43,14 +43,14 @@ in
 
   # Install fonts
   fonts = {
-    packages = [ pkgs.nerdfonts ];
+    packages = [ pkgs.nerd-fonts.symbols-only pkgs.meslo-lgs-nf ];
   };
 
   # Add Emacs overlay
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/emacs-overlay/archive/d194712b55853051456bc47f39facc39d03cbc40.tar.gz";
-      sha256 = "sha256:08akyd7lvjrdl23vxnn9ql9snbn25g91pd4hn3f150m79p23lrrs";
+      url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      sha256 = "sha256:17lch07i5vv1gkrfashh7j1afswgdj843c1iavvy3b6dn688jl31";
     }))
   ];
 

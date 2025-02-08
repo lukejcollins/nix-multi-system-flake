@@ -31,7 +31,7 @@ alias darwin-wsl-clean='nix-collect-garbage -d'
 alias nixos-clean='sudo nix-env --delete-generations old -p /nix/var/nix/profiles/system && sudo nix-collect-garbage -d'
 
 # Flake update
-alias flake-update='sudo nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes'
+alias flake-update='nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes'
 
 # pet alias
 alias snip='pet exec'
