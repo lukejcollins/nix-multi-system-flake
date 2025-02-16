@@ -70,8 +70,8 @@ text = "#1E1E2E"
 family = "MesloLGS Nerd Font"
 
 [shell]
-args = ["-c", "sleep 0.1;zellij"]
 program = "/run/current-system/sw/bin/zsh"
+args = ["-c", "sleep 0.1;zellij"]
 
 [window]
 option_as_alt = "Both"
