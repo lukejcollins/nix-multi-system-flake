@@ -27,7 +27,8 @@ in
   home = {
     packages = with pkgs; [ zsh direnv gh zellij home-manager iperf3 
                             nerd-fonts.symbols-only neofetch wget
-                            polybar feh
+                            polybar feh git-credential-manager pass
+                            pass-git-helper
                           ];
     file.".emacs.d/init.el".source = ./emacs/init.el;
     file.".config/i3/config".source = ./dotfiles/i3/config;
