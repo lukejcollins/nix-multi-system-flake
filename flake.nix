@@ -3,7 +3,7 @@
 
   inputs = {
     # Fetch the latest nixpkgs from the master branch of the NixOS repository
-    nixpkgs.url = "github:NixOS/nixpkgs/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     # Fetch home-manager and make it follow nixpkgs
     home-manager = {
