@@ -24,34 +24,38 @@ let
 
 in
 {
-  # Install packages
+  # Install system packages
   environment.systemPackages = with pkgs; [
-    uebersicht colima raycast utm
+    uebersicht   # Übersicht widget system
+    colima       # Docker alternative for macOS
+    raycast      # Productivity launcher
+    utm          # Virtualization software
   ];
 
   # Services configuration
   services = {
-    # Enable yabai
+    # Enable Yabai (tiling window manager)
     yabai = {
       enable = true;
       package = pkgs.yabai;
     };
 
-    # Enable skhd
+    # Enable skhd (hotkey daemon for macOS)
     skhd = {
       enable = true;
       package = pkgs.skhd;
     };
-
   };
   
+  # Enable Homebrew and install packages
   homebrew = {
     enable = true;
     brews = [ "emacs-plus@29" ];
   };
 
+  # Launchd user agents (macOS services)
   launchd.user.agents = {
-    # Enable Übersicht service (Wallpaper widgets)
+    # Enable Übersicht as a background service (Wallpaper widgets)
     uebersicht = {
       serviceConfig = {
         Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht";
@@ -79,17 +83,23 @@ in
   # System configuration
   system = {
     stateVersion = 4;
+
+    # macOS system defaults
     defaults = {
-      NSGlobalDomain.AppleInterfaceStyle = "Dark";
+      NSGlobalDomain.AppleInterfaceStyle = "Dark"; # Enable dark mode
+
+      # Dock customization
       dock = {
-        wvous-tl-corner = 1; # Top left corner
-        wvous-tr-corner = 1; # Top right corner
-        wvous-bl-corner = 1; # Bottom left corner
-        wvous-br-corner = 1; # Bottom right corner
-        autohide = true;
-        autohide-delay = 86400.0;
+        wvous-tl-corner = 1;  # Enable hot corner (top-left)
+        wvous-tr-corner = 1;  # Enable hot corner (top-right)
+        wvous-bl-corner = 1;  # Enable hot corner (bottom-left)
+        wvous-br-corner = 1;  # Enable hot corner (bottom-right)
+        autohide = true;       # Auto-hide dock
+        autohide-delay = 86400.0; # Extreme delay to effectively disable animation
       };
     };
+
+    # Activation script to install Rosetta for Apple Silicon
     activationScripts.extraActivation.text = ''
       softwareupdate --install-rosetta --agree-to-license
     '';
