@@ -50,10 +50,10 @@
       personal = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./unix/configuration.nix
-          ./unix/nixos/configuration.nix
-          ./unix/nixos/personal/configuration.nix
-          ./unix/nixos/personal/hardware-configuration.nix
+          ./baremetal/configuration.nix
+          ./baremetal/nixos/configuration.nix
+          ./baremetal/nixos/personal/configuration.nix
+          ./baremetal/nixos/personal/hardware-configuration.nix
           home-manager.nixosModules.home-manager
         ];
       };
@@ -61,10 +61,10 @@
       work = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./unix/configuration.nix
-          ./unix/nixos/configuration.nix
-          ./unix/nixos/work/configuration.nix
-          ./unix/nixos/work/hardware-configuration.nix
+          ./baremetal/configuration.nix
+          ./baremetal/nixos/configuration.nix
+          ./baremetal/nixos/work/configuration.nix
+          ./baremetal/nixos/work/hardware-configuration.nix
           home-manager.nixosModules.home-manager
         ];
       };
@@ -75,9 +75,9 @@
       personal = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./unix/configuration.nix
-          ./unix/darwin/configuration.nix
-          ./unix/darwin/personal/configuration.nix
+          ./baremetal/configuration.nix
+          ./baremetal/darwin/configuration.nix
+          ./baremetal/darwin/personal/configuration.nix
           { users.users."lukecollins".home = "/Users/lukecollins"; }
           home-manager.darwinModules.home-manager
           {
@@ -86,9 +86,9 @@
             home-manager.users."lukecollins" = {
               imports = [
                 ./home.nix
-                ./unix/home.nix
-                ./unix/darwin/home.nix
-                ./unix/darwin/personal/home.nix
+                ./baremetal/home.nix
+                ./baremetal/darwin/home.nix
+                ./baremetal/darwin/personal/home.nix
               ];
             };
           }
@@ -114,9 +114,9 @@
       work = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./unix/configuration.nix
-          ./unix/darwin/configuration.nix
-          ./unix/darwin/work/configuration.nix
+          ./baremetal/configuration.nix
+          ./baremetal/darwin/configuration.nix
+          ./baremetal/darwin/work/configuration.nix
           { users.users."luke.collins".home = "/Users/luke.collins"; }
           home-manager.darwinModules.home-manager
           {
@@ -125,9 +125,9 @@
             home-manager.users."luke.collins" = {
               imports = [
                 ./home.nix
-                ./unix/home.nix
-                ./unix/darwin/home.nix
-                ./unix/darwin/work/home.nix
+                ./baremetal/home.nix
+                ./baremetal/darwin/home.nix
+                ./baremetal/darwin/work/home.nix
               ];
             };
           }
@@ -142,9 +142,9 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home.nix
-          ./unix/home.nix
-          ./unix/nixos/home.nix
-          ./unix/nixos/personal/home.nix
+          ./baremetal/home.nix
+          ./baremetal/nixos/home.nix
+          ./baremetal/nixos/personal/home.nix
           {
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
@@ -157,9 +157,9 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home.nix
-          ./unix/home.nix
-          ./unix/nixos/home.nix
-          ./unix/nixos/work/home.nix
+          ./baremetal/home.nix
+          ./baremetal/nixos/home.nix
+          ./baremetal/nixos/work/home.nix
           {
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
@@ -172,7 +172,7 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home.nix
-          ./wsl/home.nix
+          ./virtual/home.nix
           {
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
