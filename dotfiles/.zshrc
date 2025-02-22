@@ -47,3 +47,5 @@ export PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH
 
 # direnv zsh hook
 eval "$(direnv hook zsh)"
+
+export GPG_TTY=$(tty)
