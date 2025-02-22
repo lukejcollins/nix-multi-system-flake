@@ -8,6 +8,7 @@ in
     # Set the file locations for the configuration files
     file = {
       ".config/alacritty/alacritty.toml".source = ./dotfiles/alacritty/alacritty.toml;
+      ".emacs".source = ./emacs/init.el;
     };
   };
 

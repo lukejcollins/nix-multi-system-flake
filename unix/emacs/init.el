@@ -1,5 +1,3 @@
-;; -*- lexical-binding: t -*-;;
-;;; init.el --- Summary
 ;; This is my Emacs initialization file which configures Emacs to my liking.
 
 ;;; Commentary:
@@ -8,16 +6,35 @@
 
 ;;; Code:
 
-(require 'use-package)
+;; Bootstrap `straight.el`
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el"
+                         user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
+;; Ensure `use-package` integrates with `straight.el`
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 ;;; Appearance Configuration ;;;
 ;;----------------------------;;
 
 ;; Load theme
-(load-theme 'catppuccin :no-confirm)
-(setq catppuccin-flavor 'mocha)
-(catppuccin-reload)
+(use-package catppuccin-theme
+  :straight t
+  :config
+  (load-theme 'catppuccin :no-confirm)
+  (setq catppuccin-flavor 'mocha)
+  (catppuccin-reload))
 
 ;;Remove tool bar
 (tool-bar-mode -1)
@@ -33,7 +50,7 @@
 (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
 
 (use-package doom-modeline
-  :ensure t
+  :straight t
   :hook (after-init . doom-modeline-mode))
 
 ;;; General Configuration ;;;
@@ -135,7 +152,7 @@
 
 ;; Dashboard configuration
 (use-package dashboard
-  :ensure t
+  :straight  t
   :config
   ;; Set the initial buffer choice to Dashboard
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
@@ -162,7 +179,7 @@
   (setq dashboard-footer-messages '("I have no mouth, and I must scream")))
 
 (use-package nerd-icons
-  :ensure t
+  :straight t
   :custom
   ;; The Nerd Font you want to use in GUI
   ;; "Symbols Nerd Font Mono" is the default and is recommended
@@ -170,25 +187,25 @@
   (nerd-icons-font-family "Symbols Nerd Font Mono"))
 
 (use-package csv-mode
-  :ensure t
+  :straight t
   :config
   (csv-mode))
 
 ;; Projectile configuration
 (use-package projectile
-  :ensure t
+  :straight t
   :config
   (projectile-mode +1))
 
 ;; Direnv configuration
 (use-package direnv
-  :ensure t
+  :straight t
   :config
   (direnv-mode))
 
 ;; Helm configuration
 (use-package helm
-  :ensure t
+  :straight t
   :config
   (helm-mode 1)
 
@@ -207,7 +224,7 @@
 
 ;; Configure company
 (use-package company
-    :ensure t
+    :straight t
     :defer 0.1
     :config
     (global-company-mode t)
@@ -224,7 +241,7 @@
 
 ;; Treemacs configuration
 (use-package treemacs
-  :ensure t
+  :straight t
   :bind (("C-x t" . treemacs)))
 
 (use-package treemacs-nerd-icons
@@ -247,10 +264,6 @@
   (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
 
 ;; Vterm configuration
-(use-package vterm
-  :ensure t
-  :config
-  (setq vterm-max-scrollback 5000))
 
 (use-package gptel
   :config
@@ -272,30 +285,30 @@
 
 ;; Modes for various file types
 (use-package terraform-mode
-  :ensure t
+  :straight t
   :mode ("\\.tf\\'" . terraform-mode))
 (use-package dockerfile-mode
-  :ensure t
+  :straight t
   :mode ("Dockerfile\\'" . dockerfile-mode)
         ("\\.dockerfile\\'" . dockerfile-mode))
 (use-package nix-mode
-  :ensure t
+  :straight t
   :mode "\\.nix\\'")
 (use-package rust-mode
-  :ensure t
+  :straight t
   :mode "\\.rs\\'")
 (use-package markdown-mode
-  :ensure t
+  :straight t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 (use-package yaml-mode
-  :ensure t
+  :straight t
   :mode "\\.yml\\'" "\\.yaml\\'")
 (use-package web-mode
-  :ensure t
+  :straight t
   :mode ("\\.html?\\'" . web-mode)
   :init
   (setq web-mode-enable-auto-quoting nil)
@@ -303,19 +316,19 @@
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-auto-close-style 2))
 (use-package css-mode
-  :ensure nil
+  :straight t
   :mode ("\\.css\\'" . css-mode)
   :init
   (setq css-indent-offset 2))
 
 ;; Enable Flycheck
 (use-package flycheck
-  :ensure t
+  :straight t
   :init (global-flycheck-mode))
 
 ;; LSP Mode
 (use-package lsp-mode
-  :ensure t
+  :straight t
   :commands (lsp lsp-deferred)
   :hook ((rust-mode . lsp-deferred)
          (nix-mode . lsp-deferred)
@@ -341,7 +354,7 @@
 
 ;; LSP UI
 (use-package lsp-ui
-  :ensure t
+  :straight t
   :after lsp-mode
   :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode))

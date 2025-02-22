@@ -44,15 +44,34 @@ in
     };
 
   };
+  
+  homebrew = {
+    enable = true;
+    brews = [ "emacs-plus@29" ];
+  };
 
-  # Enable wallpaper service
   launchd.user.agents = {
-    # Enable Übersicht service
+    # Enable Übersicht service (Wallpaper widgets)
     uebersicht = {
       serviceConfig = {
         Program = "/Applications/Nix Apps/Übersicht.app/Contents/MacOS/Übersicht";
         RunAtLoad = true;
         KeepAlive = false;
+      };
+    };
+
+    # Enable Emacs daemon as a background service
+    emacs-daemon = {
+      serviceConfig = {
+        ProgramArguments = [ "/opt/homebrew/opt/emacs-plus@29/bin/emacs" "--daemon" ];
+        RunAtLoad = true;
+        KeepAlive = true;
+        ProcessType = "Background";
+        StandardOutPath = "/tmp/emacs-daemon.log";
+        StandardErrorPath = "/tmp/emacs-daemon-error.log";
+        EnvironmentVariables = {
+          EMACS_SERVER_FILE = "/tmp/emacs$(id -u)/server";
+        };
       };
     };
   };

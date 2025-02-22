@@ -13,8 +13,6 @@
     aws-nuke tre-command fzf bat eza terraform emmet-ls poetry powershell
     azure-functions-core-tools dotenv-cli
       ];
-    })
-  ];
 
   # Install fonts
   fonts = {
