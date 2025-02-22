@@ -4,7 +4,7 @@ let
   # Placeholder for future variables or configurations
 in
 {
-  # Bootloader and boot configuration
+  # Bootloader and kernel configuration
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -13,21 +13,37 @@ in
     kernelPackages = pkgs.linuxPackages_6_9;
   };
 
-  # Hostname configuration
+  # Set hostname
   networking.hostName = "nixos";
 
-  # Install packages
+  # Install system packages
   environment.systemPackages = with pkgs; [
-    home-manager xwayland google-chrome
+    home-manager
+    xwayland
+    google-chrome
+    (emacsWithPackagesFromUsePackage {
+      config = ./emacs/init.el;
+      defaultInitFile = true;
+      alwaysEnsure = true;
+      alwaysTangle = true;
+      package = emacs29;
+      extraEmacsPackages = epkgs: with epkgs; [
+        use-package terraform-mode flycheck flycheck-inline dockerfile-mode
+        nix-mode treemacs markdown-mode treemacs-all-the-icons modus-themes
+        helm dash s editorconfig autothemer rust-mode lsp-mode
+        dashboard direnv projectile nerd-icons doom-modeline company
+        catppuccin-theme yaml-mode flycheck csv-mode web-mode gptel
+      ];
+    })
   ];
 
-  # Networking configuration
+  # Enable NetworkManager for networking
   networking.networkmanager.enable = true;
 
-  # Timezone configuration
+  # Set timezone
   time.timeZone = "Europe/London";
 
-  # Internationalisation properties
+  # Internationalisation settings
   i18n = {
     defaultLocale = "en_GB.UTF-8";
     extraLocaleSettings = {
@@ -55,13 +71,18 @@ in
     shell = pkgs.zsh;
   };
 
-  # Programs configuration
+  # Enable Firefox
   programs.firefox.enable = true;
 
-  # Services configuration
+  # System services configuration
   services = {
+    # Enable firmware updates
     fwupd.enable = true;
+
+    # Enable printing support
     printing.enable = true;
+
+    # Enable PipeWire for audio
     pipewire = {
       enable = true;
       alsa = {
@@ -72,7 +93,7 @@ in
     };
   };
 
-  # Enable Docker
+  # Enable Docker virtualisation
   virtualisation.docker.enable = true;
 
   # System state version

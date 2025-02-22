@@ -1,6 +1,9 @@
 # Opens Alacritty
 cmd - return : open -a alacritty
 
+# Opens emacs
+cmd + shift - e : /opt/homebrew/opt/emacs-plus@29/bin/emacsclient -c
+
 # Lock screen
 cmd - escape : osascript -e 'tell application "System Events" to keystroke "q" using {command down, control down}'
 

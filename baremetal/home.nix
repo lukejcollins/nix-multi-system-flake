@@ -5,15 +5,17 @@ let
 in
 {
   home = {
-    # Set the file locations for the configuration files
+    # Define file locations for configuration files
     file = {
       ".config/alacritty/alacritty.toml".source = ./dotfiles/alacritty/alacritty.toml;
+      ".emacs".source = ./emacs/init.el;
     };
   };
 
   programs.vscode = {
     enable = true;
 
+    # List of VSCode extensions to install
     extensions = with pkgs.vscode-marketplace; [
       ms-azuretools.vscode-docker
       timonwong.shellcheck
@@ -43,41 +45,35 @@ in
       ms-azuretools.vscode-azureresourcegroups
     ];
 
+    # Allow manual installation of extensions outside Nix
     mutableExtensionsDir = true;
 
+    # User-specific VSCode settings
     userSettings = {
       "editor.tabSize" = 4;
       "editor.formatOnSave" = true;
       "terminal.integrated.fontFamily" = "MesloLGS Nerd Font";
 
-      "[rust]" = {
-        "editor.formatOnSave" = true;
-      };
-      "[nix]" = {
-        "editor.formatOnSave" = true;
-      };
-      "[sh]" = {
-        "editor.formatOnSave" = true;
-      };
-      "[dockerfile]" = {
-        "editor.formatOnSave" = true;
-      };
-      "[terraform]" = {
-        "editor.formatOnSave" = true;
-      };
-      "[yaml]" = {
-        "editor.formatOnSave" = true;
-      };
-      "[python]" = {
-        "editor.formatOnSave" = true;
-      };
+      # Enable format-on-save for specific file types
+      "[rust]" = { "editor.formatOnSave" = true; };
+      "[nix]" = { "editor.formatOnSave" = true; };
+      "[sh]" = { "editor.formatOnSave" = true; };
+      "[dockerfile]" = { "editor.formatOnSave" = true; };
+      "[terraform]" = { "editor.formatOnSave" = true; };
+      "[yaml]" = { "editor.formatOnSave" = true; };
+      "[python]" = { "editor.formatOnSave" = true; };
+
+      # Configure flake8 settings for Python
       "flake8.args" = ["--max-line-length=88"];
+
+      # Disable telemetry and content sharing for Amazon Q
       "amazonQ.telemetry" = false;
       "amazonQ.shareContentWithAWS" = false;
       "amazonQ.workspaceIndex" = true;
       "amazonQ.workspaceIndexUseGPU" = true;
     };
 
+    # Custom keybindings for VSCode
     keybindings = [
       {
         key = "ctrl+x ctrl+s";

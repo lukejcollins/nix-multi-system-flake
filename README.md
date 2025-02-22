@@ -16,11 +16,11 @@ This repository provides a unified configuration setup for both NixOS and macOS 
 
 ## How the Configuration Works
 
-The configuration is hierarchical, with root-level configuration files (`configuration.nix` & `home.nix`) that set up general settings and package installations that are OS agnostic. Each system type (NixOS and macOS) then has its own directory with specific configurations for personal and work environments.
+The configuration is hierarchical, with root-level configuration files (`home.nix`) that set up general settings and package installations that are OS agnostic. Each system type (baremetal and virtual) then has its own directory with specific configurations for personal and work environments where relevant.
 
 ### Root Configuration
 
-The root `configuration.nix` and `home.nix` files include settings and packages common to all systems. This is where you define the core configuration, such as allowed packages, basic system settings, and shared services.
+The root `home.nix` includes settings and packages common to all systems. This is where you define the core configuration, such as allowed packages, basic system settings, and shared services. The intention is to shift more and more packages up to here where possible over time.
 
 ### NixOS Configuration
 
@@ -28,7 +28,10 @@ Under the `nixos` directory, there are subdirectories for personal and work conf
 
 ### macOS Configuration
 
-Similarly, under the `darwin` directory, there are subdirectories for personal and work configurations. Each of these contains `configuration.nix` and `home.nix` files tailored for macOS, managing services like yabai (tiling window manager) and other macOS-specific settings. The root of the `darwin` directory contains the device agnostic configuration for macOS. 
+Similarly, under the `darwin` directory, there are subdirectories for personal and work configurations. Each of these contains `configuration.nix` and `home.nix` files tailored for macOS, managing services like yabai (tiling window manager) and other macOS-specific settings. The root of the `darwin` directory contains the device agnostic configuration for macOS.
+
+### Virtual Configuration
+Under the `virtual` directory, there are currently no subdirectories for personal and work configurations. This structure only contains `home.nix`, as there are no plans to use NixOS for any virtual deployments.
 
 ## Prerequisites
 
@@ -40,6 +43,9 @@ Before you begin, ensure you have the following:
 
 2. For NixOS:
    - A running NixOS installation.
+   
+3. For Virtual:
+   - A virtual machine running a Linux distro.
 
 ## Step 1: Clone the Repository
 
@@ -67,7 +73,7 @@ Update the device-specific details:
   ];
 ```
 
-Replace `"your.username"` with your username. Ensure all paths and configurations specific to your device are updated accordingly.
+Replace `"your.username"` with your username. Ensure all paths and configurations specific to your device are updated accordingly. There may be subfolders and subfiles that also require username adjustments.
 
 ## Step 3: Deploy Your Configuration
 
@@ -90,7 +96,7 @@ The NixOS configuration is mostly ready to go out of the box. The nix-darwin con
   };
   ```
   
-- **General Configuration**: Review and update other configuration files in the repository to suit your preferences. Contributions and suggestions are welcome.
+- **General Configuration**: Review and update other configuration files in the repository to suit your preferences. I intend to make this README.md more user friendly in time, for now it isn't particularly granular and will require digging in to understand.
 
 ## Step 5: Enjoy Your Setup
 
