@@ -249,11 +249,6 @@
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
 
-
-;; Enable grip-mode
-(use-package grip-mode
-  :ensure t)
-
 ;; Vterm configuration
 (use-package vterm
   :ensure t
@@ -291,9 +286,6 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
-(use-package grip-mode
-  :ensure t
-  :hook ((markdown-mode . grip-mode)))
 (use-package yaml-mode
   :ensure t
   :mode "\\.yml\\'" "\\.yaml\\'")
