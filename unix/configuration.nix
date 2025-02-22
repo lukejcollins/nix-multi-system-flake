@@ -1,16 +1,5 @@
 { config, pkgs, ... }:
 
-let
-  # Get the current system architecture
-  arch = pkgs.stdenv.hostPlatform.system;
-
-  # Define Emacs package based on the system architecture
-  emacsPackage = if arch == "aarch64-darwin" then
-    pkgs.emacs29-macport
-  else
-    pkgs.emacs29;
-
-in
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -23,20 +12,6 @@ in
     clippy awscli2 typst yarn fzf spotify yaml-language-server act jq kubectl minikube
     aws-nuke tre-command fzf bat eza terraform emmet-ls poetry powershell
     azure-functions-core-tools dotenv-cli
-    # aws-sam-cli failing to build
-    # Install Emacs with packages
-    (emacsWithPackagesFromUsePackage {
-      config = ./emacs/init.el;
-      defaultInitFile = true;
-      alwaysEnsure = true;
-      alwaysTangle = true;
-      package = emacsPackage;
-      extraEmacsPackages = epkgs: with epkgs; [
-        use-package terraform-mode flycheck flycheck-inline dockerfile-mode
-        nix-mode treemacs markdown-mode treemacs-all-the-icons modus-themes
-        helm vterm grip-mode dash s editorconfig autothemer rust-mode lsp-mode
-        dashboard direnv projectile nerd-icons doom-modeline company
-        catppuccin-theme yaml-mode flycheck csv-mode codeium web-mode
       ];
     })
   ];
@@ -45,14 +20,6 @@ in
   fonts = {
     packages = [ pkgs.nerd-fonts.symbols-only pkgs.meslo-lgs-nf ];
   };
-
-  # Add Emacs overlay
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-      sha256 = "sha256:17lch07i5vv1gkrfashh7j1afswgdj843c1iavvy3b6dn688jl31";
-    }))
-  ];
 
   # Services configuration
   services = {

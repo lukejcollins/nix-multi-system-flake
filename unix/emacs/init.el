@@ -222,27 +222,6 @@
         ;; company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend)
         ))
 
-;; Configure codeium
-(use-package codeium
-    :ensure t
-    :init
-    (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
-    :config
-    (setq use-dialog-box nil) ;; do not use popup boxes
-    (setq codeium-mode-line-enable
-        (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
-    (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
-    (setq codeium-api-enabled
-        (lambda (api)
-            (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
-    (defun my-codeium/document/text ()
-        (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (min (+ (point) 1000) (point-max))))
-    (defun my-codeium/document/cursor_offset ()
-        (codeium-utf8-byte-length
-            (buffer-substring-no-properties (max (- (point) 3000) (point-min)) (point))))
-    (setq codeium/document/text 'my-codeium/document/text)
-    (setq codeium/document/cursor_offset 'my-codeium/document/cursor_offset))
-
 ;; Treemacs configuration
 (use-package treemacs
   :ensure t
@@ -267,16 +246,19 @@
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
 
-
-;; Enable grip-mode
-(use-package grip-mode
-  :ensure t)
-
 ;; Vterm configuration
 (use-package vterm
   :ensure t
   :config
   (setq vterm-max-scrollback 5000))
+
+(use-package gptel
+  :config
+  (setq gptel-model 'qwen2.5-coder:14b)
+  (setq gptel-backend (gptel-make-ollama "Ollama"
+                                         :host "192.168.0.243:11434"
+                                         :stream t
+                                         :models '("qwen2.5-coder:14b"))))
 
 ;;; Language Configuration ;;;
 ;;----------------------------;;
@@ -309,9 +291,6 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
-(use-package grip-mode
-  :ensure t
-  :hook ((markdown-mode . grip-mode)))
 (use-package yaml-mode
   :ensure t
   :mode "\\.yml\\'" "\\.yaml\\'")

@@ -39,7 +39,7 @@ in
     stateVersion = "23.11";
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #};
 }
