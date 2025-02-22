@@ -21,6 +21,20 @@ in
     home-manager
     xwayland
     google-chrome
+    (emacsWithPackagesFromUsePackage {
+      config = ./emacs/init.el;
+      defaultInitFile = true;
+      alwaysEnsure = true;
+      alwaysTangle = true;
+      package = emacs29;
+      extraEmacsPackages = epkgs: with epkgs; [
+        use-package terraform-mode flycheck flycheck-inline dockerfile-mode
+        nix-mode treemacs markdown-mode treemacs-all-the-icons modus-themes
+        helm dash s editorconfig autothemer rust-mode lsp-mode
+        dashboard direnv projectile nerd-icons doom-modeline company
+        catppuccin-theme yaml-mode flycheck csv-mode web-mode gptel
+      ];
+    })
   ];
 
   # Enable NetworkManager for networking
