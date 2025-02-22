@@ -15,10 +15,10 @@
     darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Install vscode extensions
+    # Install VSCode extensions
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
-    # Homebrew
+    # Homebrew package manager support
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
     # Optional: Declarative tap management
@@ -26,14 +26,17 @@
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
+
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+
     homebrew-bundle = {
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
+
     homebrew-emacs-plus = {
       url = "github:d12frosted/homebrew-emacs-plus";
       flake = false;
@@ -41,6 +44,7 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nix-darwin, nix-vscode-extensions, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, homebrew-emacs-plus, ... }: {
+
     # NixOS configurations for personal and work systems
     nixosConfigurations = {
       personal = nixpkgs.lib.nixosSystem {
@@ -66,7 +70,7 @@
       };
     };
 
-    # Darwin configurations for personal and work systems
+    # Darwin (macOS) configurations for personal and work systems
     darwinConfigurations = {
       personal = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
@@ -74,9 +78,7 @@
           ./unix/configuration.nix
           ./unix/darwin/configuration.nix
           ./unix/darwin/personal/configuration.nix
-          {
-            users.users."lukecollins".home = "/Users/lukecollins";
-          }
+          { users.users."lukecollins".home = "/Users/lukecollins"; }
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -90,34 +92,19 @@
               ];
             };
           }
-          {
-            nixpkgs.overlays = [
-              nix-vscode-extensions.overlays.default
-            ];
-          }
+          { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
           nix-homebrew.darwinModules.nix-homebrew
           {
             nix-homebrew = {
-              # Install Homebrew under the default prefix
               enable = true;
-
-              # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
               enableRosetta = true;
-
-              # User owning the Homebrew prefix
               user = "lukecollins";
-
-              # Optional: Declarative tap management
               taps = {
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
                 "d12frosted/homebrew-emacs-plus" = homebrew-emacs-plus;
               };
-
-              # Optional: Enable fully-declarative tap management
-              #
-              # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
               mutableTaps = false;
             };
           }
@@ -130,9 +117,7 @@
           ./unix/configuration.nix
           ./unix/darwin/configuration.nix
           ./unix/darwin/work/configuration.nix
-          {
-            users.users."luke.collins".home = "/Users/luke.collins";
-          }
+          { users.users."luke.collins".home = "/Users/luke.collins"; }
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -146,16 +131,12 @@
               ];
             };
           }
-          {
-            nixpkgs.overlays = [
-              nix-vscode-extensions.overlays.default
-            ];
-          }
+          { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
         ];
       };
     };
 
-    # Home Manager configurations for unix personal, unix work and wsl systems
+    # Home Manager configurations for Unix personal, Unix work, and WSL systems
     homeConfigurations = {
       personal = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
@@ -165,15 +146,10 @@
           ./unix/nixos/home.nix
           ./unix/nixos/personal/home.nix
           {
-            # State version and user-specific settings
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
           }
-          {
-            nixpkgs.overlays = [
-              nix-vscode-extensions.overlays.default
-            ];
-          }
+          { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
         ];
       };
 
@@ -185,15 +161,10 @@
           ./unix/nixos/home.nix
           ./unix/nixos/work/home.nix
           {
-            # State version and user-specific settings
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
           }
-          {
-            nixpkgs.overlays = [
-              nix-vscode-extensions.overlays.default
-            ];
-          }
+          { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
         ];
       };
 
@@ -203,7 +174,6 @@
           ./home.nix
           ./wsl/home.nix
           {
-            # State version and user-specific settings
             home.username = "lukecollins";
             home.homeDirectory = "/home/lukecollins";
           }

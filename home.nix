@@ -38,8 +38,4 @@ in
     # Set the default stateVersion to the latest version
     stateVersion = "23.11";
   };
-
-  #nixpkgs.config = {
-  #  allowUnfree = true;
-  #};
 }
