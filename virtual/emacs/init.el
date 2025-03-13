@@ -249,12 +249,6 @@
 (with-eval-after-load 'treemacs
   (define-key treemacs-mode-map (kbd "A a") #'my-treemacs-add-project-with-name))
 
-;; Vterm configuration
-(use-package vterm
-  :ensure t
-  :config
-  (setq vterm-max-scrollback 5000))
-
 ;;; Language Configuration ;;;
 ;;----------------------------;;
 

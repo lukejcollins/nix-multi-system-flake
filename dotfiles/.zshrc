@@ -48,4 +48,8 @@ export PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH
 # direnv zsh hook
 eval "$(direnv hook zsh)"
 
+# config for pass
 export GPG_TTY=$(tty)
+
+# emacs alias for wsl
+alias wemacs='~/bin/fullscreen.sh emacs'
