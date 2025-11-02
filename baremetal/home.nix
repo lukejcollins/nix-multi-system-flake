@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  # Additional configuration will be added later.
+  # Extend this hierarchy with additional configuration here if required.
 in
 {
   programs.vscode = {
