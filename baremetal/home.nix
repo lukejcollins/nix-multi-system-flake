@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  # Placeholder for future variables or configurations
+  # Additional configuration will be added later.
 in
 {
   programs.vscode = {
