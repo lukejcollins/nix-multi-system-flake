@@ -15,7 +15,11 @@ let
 
 in
 {
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   home = {
+
     # Set the session variables
     sessionVariables = {
       # Set the default editor to vim

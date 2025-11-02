@@ -16,7 +16,7 @@ in
     enable = true;
 
     # List of VSCode extensions to install
-    extensions = with pkgs.vscode-marketplace; [
+    profiles.default.extensions = with pkgs.vscode-marketplace; [
       ms-azuretools.vscode-docker
       timonwong.shellcheck
       rust-lang.rust-analyzer
@@ -49,7 +49,7 @@ in
     mutableExtensionsDir = true;
 
     # User-specific VSCode settings
-    userSettings = {
+    profiles.default.userSettings = {
       "editor.tabSize" = 4;
       "editor.formatOnSave" = true;
       "terminal.integrated.fontFamily" = "MesloLGS Nerd Font";
@@ -74,7 +74,7 @@ in
     };
 
     # Custom keybindings for VSCode
-    keybindings = [
+    profiles.default.keybindings = [
       {
         key = "ctrl+x ctrl+s";
         command = "workbench.action.files.save";
