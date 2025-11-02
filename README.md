@@ -14,7 +14,7 @@ This repository contains the declarative setup for my personal bare-metal NixOS 
     - `personal/` – the only enabled deployment target today.
 - **dotfiles/** – supporting shell configuration (e.g. `.zshrc`, `.p10k.zsh`) and `direnv` snippets.
 
-The layering makes it straightforward to add future targets—whether additional NixOS hosts, macOS via nix-darwin, or other environments—without reworking the flake layout.
+The layering makes it straightforward to add future targets, whether additional NixOS hosts, macOS via nix-darwin, or other environments, without reworking the flake layout.
 
 ## Using the Flake
 
