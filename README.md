@@ -1,142 +1,49 @@
-[![nix-darwin](https://img.shields.io/badge/nix-darwin-blue.svg?logo=nixos)](https://github.com/LnL7/nix-darwin)
-[![macOS](https://img.shields.io/badge/-macOS-green.svg?logo=apple)](https://www.apple.com/macos/)
 [![nixos](https://img.shields.io/badge/nixos-grey.svg?logo=nixos)](https://nixos.org/)
 
-# Multi-System Configuration with Nix
+# Personal NixOS Configuration Flake
 
-This repository provides a unified configuration setup for both NixOS and macOS (via nix-darwin), catering to both personal and work environments. It leverages the power of Nix and flakes for a declarative and reproducible system configuration.
+This repository contains the declarative setup for my personal bare-metal NixOS machine. It previously managed multiple systems, but has been pared back to a single `personal` build while keeping the hierarchical structure so new targets can slot back in when needed.
 
-<img width="1800" alt="image" src="https://github.com/lukejcollins/nix-darwin-build/assets/44213313/363d0b4e-c929-4d36-b237-d80f96ea488a">
-<p align="center"><em>An indication of the appearance of the nix-darwin build once properly deployed</em></p>
+## Repository Structure
 
-## What are NixOS and nix-darwin?
+- **flake.nix** – defines the `nixosConfigurations.personal` and `homeConfigurations.personal` outputs.
+- **home.nix** – top-level Home Manager defaults that every system inherits.
+- **baremetal/** – host-specific modules for physical machines.
+  - `configuration.nix` / `home.nix` – shared bare-metal settings.
+  - `nixos/` – NixOS modules layered on top of the bare-metal defaults.
+    - `personal/` – the only enabled deployment target today.
+- **dotfiles/** – supporting shell configuration (e.g. `.zshrc`, `.p10k.zsh`) and `direnv` snippets.
 
-- **NixOS**: A Linux distribution built on top of the Nix package manager, designed for declarative configuration and reliable system upgrades.
-- **nix-darwin**: A tool for managing macOS configuration using the Nix package manager, similar to how NixOS configurations are managed.
+The layering makes it straightforward to add future targets, whether additional NixOS hosts, macOS via nix-darwin, or other environments, without reworking the flake layout.
 
-## How the Configuration Works
+## Using the Flake
 
-The configuration is hierarchical, with root-level configuration files (`home.nix`) that set up general settings and package installations that are OS agnostic. Each system type (baremetal and virtual) then has its own directory with specific configurations for personal and work environments where relevant.
-
-### Root Configuration
-
-The root `home.nix` includes settings and packages common to all systems. This is where you define the core configuration, such as allowed packages, basic system settings, and shared services. The intention is to shift more and more packages up to here where possible over time.
-
-### NixOS Configuration
-
-Under the `nixos` directory, there are subdirectories for personal and work configurations. Each of these contains `configuration.nix` and `home.nix` files that include device-specific settings and services, such as the bootloader configuration, hostname, and additional packages. The root of the `nixos` directory contains the device agnostic configuration for NixOS. 
-
-### macOS Configuration
-
-Similarly, under the `darwin` directory, there are subdirectories for personal and work configurations. Each of these contains `configuration.nix` and `home.nix` files tailored for macOS, managing services like yabai (tiling window manager) and other macOS-specific settings. The root of the `darwin` directory contains the device agnostic configuration for macOS.
-
-### Virtual Configuration
-Under the `virtual` directory, there are currently no subdirectories for personal and work configurations. This structure only contains `home.nix`, as there are no plans to use NixOS for any virtual deployments.
-
-## Prerequisites
-
-Before you begin, ensure you have the following:
-
-1. For macOS:
-   - A macOS device.
-   - nix-darwin installed on macOS.
-
-2. For NixOS:
-   - A running NixOS installation.
-   
-3. For Virtual:
-   - A virtual machine running a Linux distro.
-
-## Step 1: Clone the Repository
-
-Clone this repository to your device:
+Clone the repo and enter the directory:
 
 ```bash
-git clone https://github.com/lukejcollins/nix-darwin-build
+git clone https://github.com/lukejcollins/nix-multi-system-flake
+cd nix-multi-system-flake
 ```
 
-## Step 2: Update Username
+To reproduce the personal system you will need to adapt any hard-coded user details (e.g. `lukecollins`, `/home/lukecollins`) across the modules to match your environment.
 
-Update the username references in your configuration files to match your device.
+When the configuration is ready, apply it with:
 
-### `flake.nix`
-
-Update the device-specific details:
-
-```nix
-  modules = [
-    # ...
-    {
-      users.users."your.username".home = "/Users/your.username";
-    }
-    # ...
-  ];
+```bash
+sudo nixos-rebuild switch --flake .#personal
+home-manager switch --flake .#personal \
+  --extra-experimental-features nix-command \
+  --extra-experimental-features flakes
 ```
 
-Replace `"your.username"` with your username. Ensure all paths and configurations specific to your device are updated accordingly. There may be subfolders and subfiles that also require username adjustments.
+The Home Manager invocation is separated so it can be rerun independently during iteration.
 
-## Step 3: Deploy Your Configuration
+## Maintenance Tips
 
-Deploy the configuration to your device. Follow the instructions from the [nix-darwin repository](https://github.com/LnL7/nix-darwin) or NixOS manual for detailed steps. I have also included some aliases in .zshrc to make this as easy as possible, referenced below.
+- `nix-collect-garbage -d` cleans old generations and store paths.
+- `sudo nix flake update` refreshes all inputs to their latest revisions.
+- `sudo nixos-rebuild switch --flake .#personal` reapplies the system after changes.
 
-## Step 4: Additional Configuration and Advice (Optional)
+Shell helpers for these commands live in `dotfiles/.zshrc`: the `nixos-personal-build` alias runs both rebuild steps, while `nixos-clean` and `flake-update` wrap the cleanup and update workflows.
 
-The NixOS configuration is mostly ready to go out of the box. The nix-darwin configuration, due to the nature of the platform, will require a little more massaging to get going. Here's a starter for ten:
-
-- **Raycast**: Use Raycast to replace macOS Spotlight for better integration with nix-darwin applications. Raycast is included in the default configuration. Follow [these instructions](https://manual.raycast.com/hotkey) to set it up.
-- **Menu Bar**: Set the macOS menu bar to hide automatically to avoid interference with Simple Bar. Follow [this guide](https://www.howtogeek.com/700398/how-to-automatically-hide-or-show-the-menu-bar-on-a-mac/).
-- **Yabai**: Configure Yabai (tiling window manager) in `/nix-darwin-build/dotfiles/yabai/yabairc`. Ensure paths and settings are updated to match your system.
-
-  ```nix
-  # Enable Yabai
-  yabai = {
-    enable = true;
-    package = pkgs.yabai;
-    extraConfig = "/Users/your.username/.config/yabai/yabairc";
-  };
-  ```
-  
-- **General Configuration**: Review and update other configuration files in the repository to suit your preferences. I intend to make this README.md more user friendly in time, for now it isn't particularly granular and will require digging in to understand.
-
-## Step 5: Enjoy Your Setup
-
-Your configuration should now be applied. Enjoy the benefits of a declarative and reproducible system configuration!
-
-## Maintenance Commands
-
-Aliases for maintaining the flake across Darwin and NixOS are included in `.zshrc`:
-
-### Build Aliases
-
-```sh
-# Darwin Personal Build
-alias darwin-personal-build='darwin-rebuild switch --flake "$(pwd)#personal"'
-
-# Darwin Work Build
-alias darwin-work-build='darwin-rebuild switch --flake "$(pwd)#work"'
-
-# NixOS Personal Build
-alias nixos-personal-build='sudo nixos-rebuild switch --flake "$(pwd)#personal" && home-manager switch --flake "$(pwd)#personal" --extra-experimental-features nix-command --extra-experimental-features flakes'
-
-# NixOS Work Build
-alias nixos-work-build='sudo nixos-rebuild switch --flake "$(pwd)#work" && home-manager switch --flake "$(pwd)#work" --extra-experimental-features nix-command --extra-experimental-features flakes'
-```
-
-### Cleaning Aliases
-
-```sh
-# Darwin Clean
-alias darwin-clean='nix-collect-garbage -d'
-
-# NixOS Clean
-alias nixos-clean='sudo nix-env --delete-generations old -p /nix/var/nix/profiles/system && sudo nix-collect-garbage -d && flake-build'
-```
-
-### Flake Update
-
-```sh
-# Flake Update
-alias flake-update='sudo nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes'
-```
-
-For more information and advanced usage, refer to the [official NixOS documentation](https://nixos.org/) and [nix-darwin documentation](https://github.com/LnL7/nix-darwin).
+Refer to the [NixOS manual](https://nixos.org/manual/nixos/stable/) and [Home Manager documentation](https://nix-community.github.io/home-manager/) for deeper guidance.
