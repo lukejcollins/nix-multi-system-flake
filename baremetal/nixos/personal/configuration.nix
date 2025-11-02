@@ -1,58 +1,106 @@
 { config, pkgs, ... }:
 
-let
-  # Placeholder for future variables or configurations
-in
 {
   imports = [ ./hardware-configuration.nix ];
 
-  # Fix for Proton/Wine-heavy titles
   boot.kernel.sysctl."vm.max_map_count" = 2147483642;
 
   hardware = {
     graphics = {
       enable = true;
       enable32Bit = true;
+      extraPackages = with pkgs; [
+        vulkan-validation-layers
+        vulkan-tools
+      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        vulkan-loader
+      ];
     };
 
     nvidia = {
       modesetting.enable = true;
       powerManagement = {
-        enable = false;
+        enable = true;
         finegrained = false;
       };
-      open = false;  # Proprietary NVIDIA driver
+      open = false;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.production;
     };
 
-    # Controller udev rules
     steam-hardware.enable = true;
   };
 
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-    videoDrivers = [ "nvidia" ];
+  services = {
+    xserver = {
+      enable = true;
+      xkb.layout = "us";
+      videoDrivers = [ "nvidia" ];
+    };
+
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
+
+    desktopManager.gnome.enable = true;
+
+    udev.packages = [ pkgs.game-devices-udev-rules ];
+    system76-scheduler.enable = true;
   };
 
-  # Enable COSMIC display manager and desktop
-  services.displayManager.cosmic-greeter.enable = true;
-  services.desktopManager.cosmic.enable = true;
+  programs = {
+    steam = {
+      enable = true;
+      extraPackages = with pkgs; [
+        gamescope
+        mangohud
+        vkbasalt
+      ];
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+      protontricks.enable = true;
+      extest.enable = true;
+    };
 
-  # Steam configuration
-  programs.steam = {
-    enable = true;
-    extraCompatPackages = with pkgs; [ proton-ge-bin ];
+    gamemode = {
+      enable = true;
+      settings = {
+        general = {
+          renice = 10;
+          softrealtime = "auto";
+          inhibit_screensaver = 1;
+        };
+        gpu.apply_clock_min_max = "auto";
+      };
+    };
+
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+      args = [ "--rt" ];
+    };
   };
 
-  # Performance and frame pacing helpers
-  programs.gamemode.enable = true;
-  programs.gamescope.enable = true;
+  environment.systemPackages = with pkgs; [
+    heroic
+    lutris
+    mangohud
+    protonup-ng
+    steam-run
+    vkd3d-proton
+    vkbasalt
+    vulkan-tools
+    vulkan-validation-layers
+    wineWowPackages.staging
+    winetricks
+  ];
 
-  # Portal integration for COSMIC
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-cosmic ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
   };
 }

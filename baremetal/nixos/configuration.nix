@@ -1,57 +1,50 @@
 { config, pkgs, ... }:
 
-let
-  # Placeholder for future variables or configurations
-in
 {
-  imports = [ ./hardware-configuration.nix ];
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
 
-  # Fix for Proton/Wine-heavy titles
-  boot.kernel.sysctl."vm.max_map_count" = 2147483642;
+  networking = {
+    hostName = "nixos";
+    networkmanager.enable = true;
+  };
 
-  hardware = {
-    graphics = {
+  environment.systemPackages = with pkgs; [
+    home-manager
+    codex
+  ];
+
+  time.timeZone = "Europe/London";
+
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+
+  users.users.lukecollins = {
+    isNormalUser = true;
+    description = "Luke Collins";
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    shell = pkgs.zsh;
+  };
+
+  programs.firefox.enable = true;
+
+  services = {
+    fwupd.enable = true;
+    printing.enable = true;
+    pipewire = {
       enable = true;
-      enable32Bit = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
     };
-
-    nvidia = {
-      modesetting.enable = true;
-      powerManagement = {
-        enable = false;
-        finegrained = false;
-      };
-      open = false;  # Proprietary NVIDIA driver
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
-    };
-
-    # Controller udev rules
-    steam-hardware.enable = true;
   };
 
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-    videoDrivers = [ "nvidia" ];
+  virtualisation.docker.enable = true;
 
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-  };
-
-  # Steam with Proton-GE available
-  programs.steam = {
-    enable = true;
-    extraCompatPackages = with pkgs; [ proton-ge-bin ];
-  };
-
-  # Performance helpers
-  programs.gamemode.enable = true;
-  programs.gamescope.enable = true;
-
-  # GNOME portals
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
-  };
+  system.stateVersion = "24.05";
 }
