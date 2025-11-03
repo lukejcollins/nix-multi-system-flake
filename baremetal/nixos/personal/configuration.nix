@@ -12,6 +12,7 @@
       extraPackages = with pkgs; [
         vulkan-validation-layers
         vulkan-tools
+        egl-wayland
       ];
       extraPackages32 = with pkgs.pkgsi686Linux; [
         vulkan-loader
@@ -21,7 +22,7 @@
     nvidia = {
       modesetting.enable = true;
       powerManagement = {
-        enable = true;
+        enable = false;
         finegrained = false;
       };
       open = false;
@@ -54,7 +55,6 @@
     steam = {
       enable = true;
       extraPackages = with pkgs; [
-        gamescope
         mangohud
         vkbasalt
       ];
@@ -77,12 +77,6 @@
         gpu.apply_clock_min_max = "auto";
       };
     };
-
-    gamescope = {
-      enable = true;
-      capSysNice = true;
-      args = [ "--rt" ];
-    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -98,6 +92,12 @@
     wineWowPackages.staging
     winetricks
   ];
+
+  environment.sessionVariables = {
+    PROTON_ENABLE_NVAPI = "1";
+    DXVK_ASYNC = "1";
+    VKD3D_CONFIG = "force_static_cbv";
+  };
 
   xdg.portal = {
     enable = true;

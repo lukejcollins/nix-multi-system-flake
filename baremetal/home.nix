@@ -42,7 +42,7 @@ in
       "editor.formatOnSave" = true;
       "terminal.integrated.fontFamily" = "MesloLGS Nerd Font";
       "[rust]" = { "editor.formatOnSave" = true; };
-      "[nix]" = { "editor.formatOnSave" = true; };
+      "[nix]" = { "editor.formatOnSave" = false; };
       "[sh]" = { "editor.formatOnSave" = true; };
       "[dockerfile]" = { "editor.formatOnSave" = true; };
       "[terraform]" = { "editor.formatOnSave" = true; };
