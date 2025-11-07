@@ -80,6 +80,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    discord
     heroic
     lutris
     mangohud
