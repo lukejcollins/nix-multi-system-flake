@@ -3,23 +3,27 @@
 {
   ids.gids.nixbld = 350;
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    always-allow-substitutes = true;
-    extra-trusted-substituters = [
-      "https://cache.lix.systems"
-    ];
-    extra-trusted-public-keys = [
-      "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
-    ];
-    bash-prompt-prefix = "(nix:$name) ";
-    max-jobs = "auto";
-    extra-nix-path = [
-      "nixpkgs=flake:nixpkgs"
-    ];
+  nix = {
+    package = pkgs.lix;
+
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      always-allow-substitutes = true;
+      extra-trusted-substituters = [
+        "https://cache.lix.systems"
+      ];
+      extra-trusted-public-keys = [
+        "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+      ];
+      bash-prompt-prefix = "(nix:$name) ";
+      max-jobs = "auto";
+      extra-nix-path = [
+        "nixpkgs=flake:nixpkgs"
+      ];
+    };
   };
 
   environment.systemPackages = with pkgs; [

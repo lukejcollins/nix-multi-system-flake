@@ -128,7 +128,7 @@ On a fresh Lix/nix-darwin bootstrap, before the functions exist, use:
 sudo env HOME=/var/root nix \
   --extra-experimental-features nix-command \
   --extra-experimental-features flakes \
-  run github:nix-darwin/nix-darwin/nix-darwin-25.11#darwin-rebuild -- \
+  run github:nix-darwin/nix-darwin/nix-darwin-26.05#darwin-rebuild -- \
   switch --flake .#personal
 ```
 

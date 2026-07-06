@@ -16,6 +16,7 @@ in
     dockerfile-language-server
     dotenv-cli
     eza
+    fastfetch
     fzf
     gcc
     gh
@@ -24,7 +25,6 @@ in
     kubectl
     minikube
     multimarkdown
-    neofetch
     nil
     nodejs
     pet
