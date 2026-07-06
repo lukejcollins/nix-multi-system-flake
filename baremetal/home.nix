@@ -1,61 +1,81 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
-  # Extend this hierarchy with additional configuration here if required.
+  alacrittyConfig = import ./config/alacritty.nix { inherit pkgs; };
+  emacsConfig = builtins.readFile ./config/emacs.el;
 in
 {
-  programs.vscode = {
+  home.packages = with pkgs; [
+    act
+    aws-nuke
+    awscli2
+    bash-language-server
+    bat
+    clippy
+    direnv
+    dockerfile-language-server
+    dotenv-cli
+    eza
+    fastfetch
+    fzf
+    gcc
+    gh
+    git
+    jq
+    kubectl
+    minikube
+    multimarkdown
+    nil
+    nodejs
+    pet
+    poetry
+    pyright
+    rust-analyzer
+    shfmt
+    spotify
+    terraform
+    terraform-ls
+    tre-command
+    typst
+    vim
+    vscode-langservers-extracted
+    wget
+    yaml-language-server
+    yarn
+    zellij
+  ];
+
+  programs.alacritty = {
     enable = true;
+    settings = alacrittyConfig;
+  };
 
-    profiles.default.extensions = with pkgs.vscode-marketplace; [
-      ms-azuretools.vscode-docker
-      timonwong.shellcheck
-      rust-lang.rust-analyzer
-      yzhang.markdown-all-in-one
-      davidanson.vscode-markdownlint
-      redhat.vscode-yaml
-      jnoortheen.nix-ide
-      ms-python.python
-      hashicorp.terraform
-      mechatroner.rainbow-csv
-      jnoortheen.nix-ide
-      ms-python.black-formatter
-      ms-python.flake8
-      ms-python.pylint
-      matangover.mypy
-      ms-python.isort
-      ms-vsliveshare.vsliveshare
-      github.vscode-github-actions
-      ms-azuretools.vscode-azureappservice
-      ms-vscode.powershell
-      azps-tools.azps-tools
-      ms-vscode.azurecli
-      msazurermtools.azurerm-vscode-tools
-      ms-azuretools.vscode-azurefunctions
-      ms-azuretools.vscode-azureresourcegroups
-    ];
-
-    mutableExtensionsDir = true;
-
-    profiles.default.userSettings = {
-      "editor.tabSize" = 4;
-      "editor.formatOnSave" = true;
-      "terminal.integrated.fontFamily" = "MesloLGS Nerd Font";
-      "[rust]" = { "editor.formatOnSave" = true; };
-      "[nix]" = { "editor.formatOnSave" = false; };
-      "[sh]" = { "editor.formatOnSave" = true; };
-      "[dockerfile]" = { "editor.formatOnSave" = true; };
-      "[terraform]" = { "editor.formatOnSave" = true; };
-      "[yaml]" = { "editor.formatOnSave" = true; };
-      "[python]" = { "editor.formatOnSave" = true; };
-      "flake8.args" = [ "--max-line-length=88" ];
-    };
-
-    profiles.default.keybindings = [
-      {
-        key = "ctrl+x ctrl+s";
-        command = "workbench.action.files.save";
-      }
+  programs.emacs = {
+    enable = true;
+    extraConfig = emacsConfig;
+    extraPackages = epkgs: with epkgs; [
+      use-package
+      catppuccin-theme
+      doom-modeline
+      dashboard
+      nerd-icons
+      csv-mode
+      projectile
+      direnv
+      helm
+      company
+      treemacs
+      treemacs-nerd-icons
+      terraform-mode
+      dockerfile-mode
+      nix-mode
+      rust-mode
+      markdown-mode
+      yaml-mode
+      web-mode
+      flycheck
+      lsp-mode
+      lsp-ui
     ];
   };
 }

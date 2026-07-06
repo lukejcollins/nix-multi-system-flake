@@ -42,12 +42,13 @@
 
     displayManager.gdm = {
       enable = true;
-      wayland = true;
     };
 
     desktopManager.gnome.enable = true;
 
-    udev.packages = [ pkgs.game-devices-udev-rules ];
+    udev.packages = [
+      pkgs.game-devices-udev-rules
+    ];
     system76-scheduler.enable = true;
   };
 
@@ -58,7 +59,9 @@
         mangohud
         vkbasalt
       ];
-      extraCompatPackages = with pkgs; [ proton-ge-bin ];
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+      ];
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
@@ -102,6 +105,8 @@
 
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+    ];
   };
 }
