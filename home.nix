@@ -4,16 +4,11 @@ let
   pythonTooling = pkgs.python3.withPackages (ps:
     with ps; [
       pynvim
-      python-lsp-server
-      python-lsp-black
-      pyls-isort
-      pylsp-mypy
-      black
-      flake8
-      pylint
-      isort
+      debugpy
       mypy
       pip
+      pytest
+      ruff
     ]
   );
 in

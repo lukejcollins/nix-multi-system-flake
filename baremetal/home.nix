@@ -12,6 +12,8 @@ in
     bash-language-server
     bat
     clippy
+    codex
+    codex-acp
     direnv
     dockerfile-language-server
     dotenv-cli
@@ -30,6 +32,7 @@ in
     pet
     poetry
     pyright
+    ripgrep
     rust-analyzer
     shfmt
     spotify
@@ -75,7 +78,13 @@ in
       web-mode
       flycheck
       lsp-mode
+      lsp-pyright
       lsp-ui
+      dap-mode
+      pyvenv
+      python-pytest
+      ruff-format
+      agent-shell
     ];
   };
 }
