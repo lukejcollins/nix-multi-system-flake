@@ -152,7 +152,9 @@
                           (company-mode -1))))
   :config
   (setq agent-shell-openai-authentication
-        (agent-shell-openai-make-authentication :login t))
+        (agent-shell-openai-make-authentication :login t)
+        agent-shell-openai-default-model-id "gpt-5.5"
+        agent-shell-openai-default-session-mode-id "medium")
   :bind (("C-c a c" . agent-shell-openai-start-codex)
          ("C-c a a" . agent-shell)))
 

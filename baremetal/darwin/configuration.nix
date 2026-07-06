@@ -3,6 +3,10 @@
 {
   ids.gids.nixbld = 350;
 
+  documentation.enable = false;
+
+  system.tools.darwin-uninstaller.enable = false;
+
   nix = {
     package = pkgs.lix;
 
