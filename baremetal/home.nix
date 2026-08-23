@@ -12,15 +12,20 @@ in
     bash-language-server
     bat
     clippy
+    codex
+    codex-acp
     direnv
     dockerfile-language-server
     dotenv-cli
     eza
     fastfetch
+    firefox-bin
     fzf
     gcc
+    geckodriver
     gh
     git
+    imagemagick
     jq
     kubectl
     minikube
@@ -30,6 +35,11 @@ in
     pet
     poetry
     pyright
+    ripgrep
+    ruby
+    rubyPackages.htmlbeautifier
+    rubyPackages.rubocop
+    rubyPackages.solargraph
     rust-analyzer
     shfmt
     spotify
@@ -73,9 +83,17 @@ in
       markdown-mode
       yaml-mode
       web-mode
+      inf-ruby
+      rubocop
       flycheck
       lsp-mode
+      lsp-pyright
       lsp-ui
+      dap-mode
+      pyvenv
+      python-pytest
+      ruff-format
+      agent-shell
     ];
   };
 }

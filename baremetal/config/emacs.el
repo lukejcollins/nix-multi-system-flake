@@ -141,6 +141,23 @@
 ;;; App Configuration ;;;
 ;;----------------------;;
 
+;;; Agent Shell Configuration ;;;
+;;-------------------------------;;
+
+(use-package agent-shell
+  :commands (agent-shell agent-shell-openai-start-codex)
+  :hook
+  (agent-shell-mode . (lambda ()
+                        (when (bound-and-true-p company-mode)
+                          (company-mode -1))))
+  :config
+  (setq agent-shell-openai-authentication
+        (agent-shell-openai-make-authentication :login t)
+        agent-shell-openai-default-model-id "gpt-5.5"
+        agent-shell-openai-default-session-mode-id "read-only")
+  :bind (("C-c a c" . agent-shell-openai-start-codex)
+         ("C-c a a" . agent-shell)))
+
 ;;; Dashboard Configuration ;;;
 ;;----------------------------;;
 
@@ -161,7 +178,7 @@
   (setq dashboard-items '((recents . 5)))
 
   ;; Set the footer message
-  (setq dashboard-footer-messages '("I have no mouth, and I must scream"))
+  (setq dashboard-footer-messages '("Somewhere, a daemon is watching."))
 
   ;; Set the initial buffer choice to Dashboard for interactive sessions.
   (unless noninteractive
@@ -231,7 +248,7 @@
   (setq-default
    company-idle-delay 0.05 ;; Show completions quickly
    company-require-match nil
-   company-minimum-prefix-length 0
+   company-minimum-prefix-length 1
 
    ;; Get only preview
    company-frontends '(company-preview-frontend)
@@ -298,6 +315,22 @@
 (use-package rust-mode
   :mode "\\.rs\\'")
 
+;; Ruby Mode
+(use-package ruby-mode
+  :ensure nil
+  :mode (("\\.rb\\'" . ruby-mode)
+         ("Gemfile\\'" . ruby-mode)
+         ("Rakefile\\'" . ruby-mode)
+         ("\\.gemspec\\'" . ruby-mode))
+  :init
+  (setq ruby-indent-level 2))
+
+(use-package inf-ruby
+  :hook (ruby-mode . inf-ruby-minor-mode))
+
+(use-package rubocop
+  :hook (ruby-mode . rubocop-mode))
+
 ;; Markdown Mode
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
@@ -312,14 +345,17 @@
   :mode (("\\.yml\\'" . yaml-mode)
          ("\\.yaml\\'" . yaml-mode)))
 
-;; Web Mode (for HTML)
+;; Web Mode (for HTML and TRMNL Liquid templates)
 (use-package web-mode
-  :mode ("\\.html?\\'" . web-mode)
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.liquid\\'" . web-mode))
   :init
   (setq web-mode-enable-auto-quoting nil)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
-  (setq web-mode-auto-close-style 2))
+  (setq web-mode-auto-close-style 2)
+  :config
+  (add-to-list 'web-mode-engines-alist '("liquid" . "\\.liquid\\'")))
 
 ;; CSS Mode
 (use-package css-mode
@@ -334,7 +370,16 @@
   :demand t
   :functions global-flycheck-mode
   :config
-  (global-flycheck-mode))
+  (global-flycheck-mode)
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (setq-local flycheck-checker 'python-ruff)))
+  (add-hook 'python-ts-mode-hook
+            (lambda ()
+              (setq-local flycheck-checker 'python-ruff)))
+  (add-hook 'ruby-mode-hook
+            (lambda ()
+              (setq-local flycheck-checker 'ruby-rubocop))))
 
 ;;; LSP Mode Configuration ;;;
 ;;---------------------------;;
@@ -344,23 +389,58 @@
   :custom
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-rust-analyzer-server-display-inlay-hints t)
-  (lsp-completion-enable nil)
-  (lsp-pylsp-plugins-flake8-enabled t)
-  (lsp-pylsp-plugins-black-enabled t)
-  (lsp-pylsp-plugins-isort-enabled t)
-  (lsp-pylsp-plugins-mypy-enabled t)
-  (lsp-pylsp-plugins-mypy-live-mode t)
-  (lsp-pylsp-plugins-pylint-enabled t)
-  (lsp-pylsp-plugins-flake8-max-line-length 88)
+  (lsp-completion-enable t)
   :hook ((rust-mode . lsp-deferred)
          (nix-mode . lsp-deferred)
          (sh-mode . enable-lsp-in-sh-mode)
          (dockerfile-mode . lsp-deferred)
          (terraform-mode . lsp-deferred)
          (yaml-mode . lsp-deferred)
-         (python-mode . lsp-deferred)
+         (ruby-mode . lsp-deferred)
          (web-mode . lsp-deferred)
          (css-mode . lsp-deferred)))
+
+;;; Python Configuration ;;;
+;;-------------------------;;
+
+(use-package lsp-pyright
+  :after lsp-mode
+  :custom
+  (lsp-pyright-auto-import-completions t)
+  (lsp-pyright-diagnostic-mode "workspace")
+  (lsp-pyright-type-checking-mode "standard")
+  :hook ((python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred)))
+         (python-ts-mode . (lambda ()
+                             (require 'lsp-pyright)
+                             (lsp-deferred)))))
+
+(use-package ruff-format
+  :commands (ruff-format-buffer ruff-format-region ruff-format-on-save-mode)
+  :hook ((python-mode . ruff-format-on-save-mode)
+         (python-ts-mode . ruff-format-on-save-mode)))
+
+(use-package python-pytest
+  :commands (python-pytest-dispatch
+             python-pytest
+             python-pytest-file
+             python-pytest-function)
+  :custom
+  (python-pytest-executable "pytest")
+  :bind (:map python-mode-map
+              ("C-c t" . python-pytest-dispatch)))
+
+(use-package pyvenv
+  :commands (pyvenv-activate pyvenv-deactivate pyvenv-workon))
+
+(use-package dap-mode
+  :after lsp-mode
+  :commands (dap-debug dap-debug-edit-template)
+  :config
+  (require 'dap-python)
+  (setq dap-python-debugger 'debugpy)
+  (setq dap-python-executable "python"))
 
 ;;; LSP UI Configuration ;;;
 ;;-------------------------;;
