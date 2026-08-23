@@ -154,7 +154,7 @@
   (setq agent-shell-openai-authentication
         (agent-shell-openai-make-authentication :login t)
         agent-shell-openai-default-model-id "gpt-5.5"
-        agent-shell-openai-default-session-mode-id "medium")
+        agent-shell-openai-default-session-mode-id "read-only")
   :bind (("C-c a c" . agent-shell-openai-start-codex)
          ("C-c a a" . agent-shell)))
 
@@ -315,6 +315,22 @@
 (use-package rust-mode
   :mode "\\.rs\\'")
 
+;; Ruby Mode
+(use-package ruby-mode
+  :ensure nil
+  :mode (("\\.rb\\'" . ruby-mode)
+         ("Gemfile\\'" . ruby-mode)
+         ("Rakefile\\'" . ruby-mode)
+         ("\\.gemspec\\'" . ruby-mode))
+  :init
+  (setq ruby-indent-level 2))
+
+(use-package inf-ruby
+  :hook (ruby-mode . inf-ruby-minor-mode))
+
+(use-package rubocop
+  :hook (ruby-mode . rubocop-mode))
+
 ;; Markdown Mode
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
@@ -329,14 +345,17 @@
   :mode (("\\.yml\\'" . yaml-mode)
          ("\\.yaml\\'" . yaml-mode)))
 
-;; Web Mode (for HTML)
+;; Web Mode (for HTML and TRMNL Liquid templates)
 (use-package web-mode
-  :mode ("\\.html?\\'" . web-mode)
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.liquid\\'" . web-mode))
   :init
   (setq web-mode-enable-auto-quoting nil)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
-  (setq web-mode-auto-close-style 2))
+  (setq web-mode-auto-close-style 2)
+  :config
+  (add-to-list 'web-mode-engines-alist '("liquid" . "\\.liquid\\'")))
 
 ;; CSS Mode
 (use-package css-mode
@@ -357,7 +376,10 @@
               (setq-local flycheck-checker 'python-ruff)))
   (add-hook 'python-ts-mode-hook
             (lambda ()
-              (setq-local flycheck-checker 'python-ruff))))
+              (setq-local flycheck-checker 'python-ruff)))
+  (add-hook 'ruby-mode-hook
+            (lambda ()
+              (setq-local flycheck-checker 'ruby-rubocop))))
 
 ;;; LSP Mode Configuration ;;;
 ;;---------------------------;;
@@ -374,6 +396,7 @@
          (dockerfile-mode . lsp-deferred)
          (terraform-mode . lsp-deferred)
          (yaml-mode . lsp-deferred)
+         (ruby-mode . lsp-deferred)
          (web-mode . lsp-deferred)
          (css-mode . lsp-deferred)))
 

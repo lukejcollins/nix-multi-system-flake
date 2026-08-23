@@ -19,10 +19,13 @@ in
     dotenv-cli
     eza
     fastfetch
+    firefox-bin
     fzf
     gcc
+    geckodriver
     gh
     git
+    imagemagick
     jq
     kubectl
     minikube
@@ -33,6 +36,10 @@ in
     poetry
     pyright
     ripgrep
+    ruby
+    rubyPackages.htmlbeautifier
+    rubyPackages.rubocop
+    rubyPackages.solargraph
     rust-analyzer
     shfmt
     spotify
@@ -76,6 +83,8 @@ in
       markdown-mode
       yaml-mode
       web-mode
+      inf-ruby
+      rubocop
       flycheck
       lsp-mode
       lsp-pyright
