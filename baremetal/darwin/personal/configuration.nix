@@ -19,6 +19,7 @@
 
     brews = [
       "nmap"
+      "mkcert"
     ];
 
     casks = [
