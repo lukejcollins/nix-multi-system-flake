@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
+  primaryUserHome = config.users.users.${config.system.primaryUser}.home;
+in {
   ids.gids.nixbld = 350;
 
   documentation.enable = false;
@@ -11,10 +13,6 @@
     package = pkgs.lix;
 
     settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
       always-allow-substitutes = true;
       extra-trusted-substituters = [
         "https://cache.lix.systems"
@@ -23,7 +21,6 @@
         "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
       ];
       bash-prompt-prefix = "(nix:$name) ";
-      max-jobs = "auto";
       extra-nix-path = [
         "nixpkgs=flake:nixpkgs"
       ];
@@ -43,11 +40,8 @@
       RunAtLoad = true;
       KeepAlive = true;
       ProcessType = "Background";
-      StandardOutPath = "/tmp/emacs-daemon.log";
-      StandardErrorPath = "/tmp/emacs-daemon-error.log";
-      EnvironmentVariables = {
-        EMACS_SERVER_FILE = "/tmp/emacs$(id -u)/server";
-      };
+      StandardOutPath = "${primaryUserHome}/Library/Logs/emacs-daemon.log";
+      StandardErrorPath = "${primaryUserHome}/Library/Logs/emacs-daemon-error.log";
     };
   };
 
@@ -68,7 +62,9 @@
     };
 
     activationScripts.extraActivation.text = ''
-      softwareupdate --install-rosetta --agree-to-license
+      if ! /usr/sbin/pkgutil --pkg-info com.apple.pkg.RosettaUpdateAuto >/dev/null 2>&1; then
+        /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+      fi
     '';
   };
 }

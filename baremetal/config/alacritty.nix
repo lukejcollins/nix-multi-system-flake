@@ -1,5 +1,3 @@
-{ pkgs }:
-
 {
   colors = {
     bright = {
@@ -88,11 +86,6 @@
   };
 
   font.normal.family = "MesloLGS NF";
-
-  terminal.shell = {
-    program = "${pkgs.zsh}/bin/zsh";
-    args = [ "-c" "sleep 0.1;zellij" ];
-  };
 
   window.option_as_alt = "Both";
 }

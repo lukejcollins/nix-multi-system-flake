@@ -8,14 +8,15 @@ This repository is a multi-system Nix flake for managing NixOS, macOS via nix-da
 
 The layout is hierarchical: common settings live near the root, platform-specific settings layer on top, and host/persona-specific settings only exist when there is real configuration to apply.
 
-`flake.nix` uses an `optionalImport` helper, so empty placeholder files are not required.
+`flake.nix` uses small host constructors to keep identity and profile differences visible. Core modules are required, while profile-specific override files remain optional so empty placeholders are not needed.
 
 ## Outputs
 
 - `nixosConfigurations.personal` - x86_64 NixOS desktop/gaming machine.
 - `darwinConfigurations.personal` - personal Apple Silicon macOS machine.
 - `darwinConfigurations.work` - work Apple Silicon macOS machine.
-- `homeConfigurations.personal` - standalone Home Manager output for the Linux personal user profile.
+
+Home Manager is embedded in both NixOS and nix-darwin, so a system rebuild activates the matching user configuration as part of the same generation.
 
 The output names such as `personal` and `work` are just profile names. Rename or replace them in `flake.nix` if your machines use different names.
 
@@ -28,11 +29,15 @@ The output names such as `personal` and `work` are just profile names. Rename or
 - `baremetal/darwin/` - shared nix-darwin system module.
 - `baremetal/darwin/personal/` - personal macOS-specific module.
 - `home.nix` - shared Home Manager defaults.
-- `baremetal/home.nix` - shared user packages plus Alacritty and Emacs Home Manager configuration.
+- `baremetal/home.nix` - entry point for shared Home Manager modules.
+- `baremetal/home/core.nix` - core CLI tools and program modules.
+- `baremetal/home/development.nix` - development tools and language servers.
+- `baremetal/home/emacs.nix` - Emacs and its package set.
+- `baremetal/home/personal.nix` - personal GUI applications, imported only by personal profiles.
 - `baremetal/config/` - imported user application configuration such as Alacritty and Emacs.
 - `config/.p10k.zsh` - Powerlevel10k prompt config linked by Home Manager.
 
-The `work` Darwin output currently exists, but has no work-specific module checked in. It inherits the shared Darwin and Home Manager layers.
+The `work` Darwin output currently has no work-specific module checked in. It inherits the shared core, development, and Emacs layers, but not personal GUI applications.
 
 ## Adapting This Repo
 
@@ -45,7 +50,6 @@ At minimum, review and change:
   - `system.primaryUser` for nix-darwin outputs.
   - `users.users."<name>".home` for nix-darwin home paths.
   - `home-manager.users."<name>"` for embedded Home Manager on Darwin.
-  - `home.username` and `home.homeDirectory` for standalone Home Manager.
   - Output names such as `personal` and `work` if you want different flake targets.
 - `baremetal/nixos/personal/configuration.nix`
   - NixOS host name.
@@ -71,7 +75,7 @@ The simplest path is to copy an existing profile directory and rename the output
 3. Update username, home directory, host name, and system architecture.
 4. Apply with the matching flake target, for example `.#my-machine`.
 
-Because `optionalImport` is used, you do not need to create empty `home.nix` or `configuration.nix` files for every layer. Add a file only when that layer has real settings.
+Because `optionalImport` is used for optional platform and Darwin profile overrides, you do not need to create empty files for those layers. NixOS host configuration files remain required because they contain the hardware-facing machine definition.
 
 ## System Layers
 
@@ -94,7 +98,7 @@ The Darwin layers own macOS machine behavior:
 - macOS defaults, Rosetta activation, and the launchd-managed Emacs daemon.
 - Personal macOS package additions.
 
-Home Manager owns user-level tools and preferences on both platforms:
+Embedded Home Manager owns user-level tools and preferences on both platforms:
 
 - CLI tools, language servers, development tools, and editor dependencies.
 - Zsh aliases/functions, Powerlevel10k, direnv, zellij, Alacritty, and Emacs.
@@ -111,16 +115,13 @@ cd nix-multi-system-flake
 
 ### NixOS
 
-Apply the personal NixOS system and standalone Home Manager profile:
+Apply the personal NixOS system and its embedded Home Manager profile:
 
 ```bash
 sudo nixos-rebuild switch --flake .#personal
-home-manager switch --flake .#personal \
-  --extra-experimental-features nix-command \
-  --extra-experimental-features flakes
 ```
 
-After that, the `nixos-personal-build` helper from `home.nix` wraps both commands.
+After that, the `nixos-personal-build` helper from `home.nix` runs the same one-step activation. Build helpers use `$NIX_CONFIG_FLAKE`, which defaults to `~/git/nix-multi-system-flake`; override it if the checkout lives elsewhere.
 
 Before applying the NixOS output, make sure it matches your machine:
 
@@ -177,16 +178,6 @@ sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
 sudo mv /etc/nix/nix.custom.conf /etc/nix/nix.custom.conf.before-nix-darwin
 ```
 
-### Standalone Home Manager
-
-The standalone Home Manager output is for the Linux personal profile:
-
-```bash
-home-manager switch --flake .#personal \
-  --extra-experimental-features nix-command \
-  --extra-experimental-features flakes
-```
-
 ## Maintenance
 
 Useful shell commands are declared in `home.nix`:
@@ -218,14 +209,6 @@ Build the personal Darwin system without activating:
 
 ```bash
 nix build .#darwinConfigurations.personal.config.system.build.toplevel --no-link \
-  --extra-experimental-features nix-command \
-  --extra-experimental-features flakes
-```
-
-Build the standalone Home Manager profile without activating:
-
-```bash
-nix build .#homeConfigurations.personal.activationPackage --no-link \
   --extra-experimental-features nix-command \
   --extra-experimental-features flakes
 ```

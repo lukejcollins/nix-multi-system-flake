@@ -21,7 +21,6 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     home-manager,
     nix-darwin,
@@ -32,99 +31,77 @@
     optionalImport = path:
       if builtins.pathExists path then [ path ] else [ ];
 
-    personalHomePkgs = import nixpkgs {
-      system = "x86_64-linux";
-      config.allowUnfree = true;
-    };
-  in
-  {
-    nixosConfigurations.personal = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules =
-        [ ./baremetal/nixos/personal/hardware-configuration.nix ]
-        ++ optionalImport ./baremetal/configuration.nix
-        ++ optionalImport ./baremetal/nixos/configuration.nix
-        ++ optionalImport ./baremetal/nixos/personal/configuration.nix
-        ++ [ home-manager.nixosModules.home-manager ];
+    homeModules = profile: platform:
+      [
+        ./home.nix
+        ./baremetal/home.nix
+      ]
+      ++ optionalImport (./baremetal + "/${platform}/home.nix")
+      ++ optionalImport (./baremetal + "/${platform}/${profile}/home.nix");
+
+    mkDarwinHost = {
+      profile,
+      username,
+      system ? "aarch64-darwin",
+    }:
+      nix-darwin.lib.darwinSystem {
+        inherit system;
+        modules = [
+          ./baremetal/configuration.nix
+          ./baremetal/darwin/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            system.primaryUser = username;
+            users.users.${username}.home = "/Users/${username}";
+
+            home-manager = {
+              extraSpecialArgs = { inherit powerlevel10k; };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${username}.imports = homeModules profile "darwin";
+            };
+          }
+        ] ++ optionalImport (./baremetal/darwin + "/${profile}/configuration.nix");
+      };
+
+    mkNixosHost = {
+      profile,
+      username,
+      system ? "x86_64-linux",
+    }:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./baremetal/configuration.nix
+          ./baremetal/nixos/configuration.nix
+          (./baremetal/nixos + "/${profile}/configuration.nix")
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              extraSpecialArgs = { inherit powerlevel10k; };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${username}.imports = homeModules profile "nixos";
+            };
+          }
+        ];
+      };
+  in {
+    nixosConfigurations.personal = mkNixosHost {
+      profile = "personal";
+      username = "lukecollins";
     };
 
     darwinConfigurations = {
-      personal = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules =
-          optionalImport ./baremetal/configuration.nix
-          ++ optionalImport ./baremetal/darwin/configuration.nix
-          ++ optionalImport ./baremetal/darwin/personal/configuration.nix
-          ++ [
-          {
-            system.primaryUser = "lukecollins";
-            users.users."lukecollins".home = "/Users/lukecollins";
-          }
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {
-              inherit powerlevel10k;
-            };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users."lukecollins" = {
-              imports =
-                optionalImport ./home.nix
-                ++ optionalImport ./baremetal/home.nix
-                ++ optionalImport ./baremetal/darwin/home.nix
-                ++ optionalImport ./baremetal/darwin/personal/home.nix;
-            };
-          }
-        ];
+      personal = mkDarwinHost {
+        profile = "personal";
+        username = "lukecollins";
       };
 
-      work = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules =
-          optionalImport ./baremetal/configuration.nix
-          ++ optionalImport ./baremetal/darwin/configuration.nix
-          ++ optionalImport ./baremetal/darwin/work/configuration.nix
-          ++ [
-          {
-            system.primaryUser = "luke.collins";
-            users.users."luke.collins".home = "/Users/luke.collins";
-          }
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {
-              inherit powerlevel10k;
-            };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users."luke.collins" = {
-              imports =
-                optionalImport ./home.nix
-                ++ optionalImport ./baremetal/home.nix
-                ++ optionalImport ./baremetal/darwin/home.nix
-                ++ optionalImport ./baremetal/darwin/work/home.nix;
-            };
-          }
-        ];
+      work = mkDarwinHost {
+        profile = "work";
+        username = "luke.collins";
       };
     };
-
-    homeConfigurations.personal =
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = personalHomePkgs;
-        extraSpecialArgs = {
-          inherit powerlevel10k;
-        };
-        modules =
-          optionalImport ./home.nix
-          ++ optionalImport ./baremetal/home.nix
-          ++ optionalImport ./baremetal/nixos/home.nix
-          ++ optionalImport ./baremetal/nixos/personal/home.nix
-          ++ [
-          {
-            home.username = "lukecollins";
-            home.homeDirectory = "/home/lukecollins";
-          }
-        ];
-      };
   };
 }

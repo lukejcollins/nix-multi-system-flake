@@ -3,9 +3,10 @@
 {
   nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = with pkgs; [
-    postgresql
-  ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    max-jobs = "auto";
+  };
 
   fonts.packages = [
     pkgs.nerd-fonts.symbols-only

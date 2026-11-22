@@ -12,11 +12,6 @@
     networkmanager.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    home-manager
-    codex
-  ];
-
   time.timeZone = "Europe/London";
 
   i18n.defaultLocale = "en_GB.UTF-8";
@@ -30,8 +25,6 @@
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
   };
-
-  programs.firefox.enable = true;
 
   services = {
     fwupd.enable = true;

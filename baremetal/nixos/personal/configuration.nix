@@ -93,7 +93,7 @@
     vkbasalt
     vulkan-tools
     vulkan-validation-layers
-    wineWowPackages.staging
+    wineWow64Packages.staging
     winetricks
   ];
 
